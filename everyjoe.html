@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>every Joe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Cormorant:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --logo-full: url('assets/logo-everyjoe.png');
+  --logo-every: url('assets/logo-every.png');
+  --logo-joe: url('assets/logo-joe.png');
+  --black:#0a0a0a; --teal:#17b0a7; --white:#f4f4f2; --grey:#CCFF00;
+  --font-display:'Faire Spring Sans','Space Grotesk',sans-serif;
+  --font-serif:'Cormorant',Georgia,serif;
+  --logo-w:clamp(300px,44vw,640px);
+  --corner-size:clamp(30px,4.4vw,66px);
+}
+*{margin:0;padding:0;box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;   /* kills blue tap flash */
+}
+/* allow text selection only in the login inputs */
+input{-webkit-user-select:text;user-select:text;}
+/* everything clickable = no text selection / no highlight */
+.dept,.d,.tile,.car-tabs span,.car-arrow,.topnav .btn,.p-dept-center,.dept-center,.logo-wrap,.vid-mute,.close{
+  -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;outline:none;
+}
+html,body{height:100%;}
+body{font-family:var(--font-display);background:var(--black);color:var(--white);overflow:hidden;}
+.screen{position:fixed;inset:0;opacity:0;visibility:hidden;transition:opacity .6s ease;z-index:1;}
+.screen.active{opacity:1;visibility:visible;z-index:2;}
+.topnav{position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:100;display:flex;gap:14px;align-items:center;}
+.topnav .btn{display:flex;align-items:center;gap:5px;font-size:11px;cursor:pointer;opacity:.85;transition:opacity .25s;}
+.topnav .btn:hover{opacity:1;}
+.topnav .dot{width:5px;height:5px;border-radius:50%;border:1px solid var(--white);}
+#homeBtn{display:none;}
+.logo-img-el{background-size:contain;background-repeat:no-repeat;background-position:center;}
+.el-full{background-image:var(--logo-full);}
+.el-every{background-image:var(--logo-every);background-position:left center;}
+.el-joe{background-image:var(--logo-joe);background-position:right center;}
+/* ================= 1. HOME ================= */
+#home{display:grid;grid-template-columns:1fr 1fr;cursor:pointer;}
+.home__left{background:var(--black);position:relative;overflow:hidden;}
+.home__right{position:relative;overflow:hidden;background:#111;}
+.slideshow{position:absolute;inset:0;}
+.slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.1s ease;}
+.slide.active{opacity:1;}
+.home-perm-overlay{position:absolute;inset:0;background:rgba(0,0,0,.20);z-index:5;pointer-events:none;}
+.home-center{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.logo-wrap{position:relative;cursor:pointer;display:inline-block;}
+.logo-full-img{width:var(--logo-w);height:clamp(70px,10vw,150px);}
+.tagline{margin-top:1rem;font-family:var(--font-serif);font-style:italic;font-size:clamp(15px,1.5vw,21px);line-height:1.5;
+  text-align:right;width:var(--logo-w);margin-left:auto;opacity:0;animation:fadeUp 1.2s ease .6s forwards;}
+.home-menu{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9;display:flex;flex-direction:column;
+  align-items:flex-end;pointer-events:none;opacity:0;transition:opacity .35s ease;width:var(--logo-w);}
+.logo-wrap:hover + .home-menu, .home-menu:hover{opacity:1;pointer-events:auto;}
+.home-menu.open{opacity:1;pointer-events:auto;}
+.home-menu .stack{display:flex;flex-direction:column;align-items:flex-end;
+  margin-right:calc(var(--logo-w) * 0.34 + 150px);
+  transform:translateY(0);transition:transform .35s ease;}
+.logo-wrap:hover + .home-menu .stack, .home-menu:hover .stack, .home-menu.open .stack{transform:translateY(-50px);}
+.home-menu .dept{font-family:var(--font-display);font-weight:700;color:var(--grey);cursor:pointer;line-height:1.1;
+  transition:color .2s;font-size:clamp(20px,2.6vw,40px);text-align:right;white-space:nowrap;}
+.home-menu .dept:hover{color:var(--white);}
+.home-menu .spacer{height:clamp(55px,18vw,155px);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:.9;transform:translateY(0);}}
+/* ================= 2. GRID ================= */
+#dept{background:#000;overflow:hidden;}
+.grid-scroll{position:absolute;inset:0;overflow-y:auto;z-index:1;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.grid-scroll::-webkit-scrollbar{display:none;}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);grid-auto-rows:50vh;gap:0px;min-height:100vh;}
+.tile{position:relative;overflow:hidden;background:#222;cursor:pointer;transition:filter .4s ease;filter:brightness(.55);}
+.tile.blank{cursor:default;filter:none;}
+.tile .ph{position:absolute;inset:0;background-size:cover;background-position:center;}
+.tile:not(.blank):hover{filter:brightness(1);}
+.tile .info{position:absolute;left:0;bottom:0;padding:0 4% 4%;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;z-index:3;}
+.tile:not(.blank):hover .info{opacity:1;transform:translateY(0);}
+.tile .info .name{font-family:var(--font-display);font-weight:700;font-size:clamp(20px,2.2vw,40px);line-height:1;}
+.tile .info .desig{font-size:clamp(11px,1vw,15px);margin-top:.5em;}
+.tile .info .desig b{font-weight:700;}
+.grid-overlay{position:absolute;inset:0;background:rgba(0,0,0,.20);z-index:10;pointer-events:none;}
+.grid-header{position:fixed;inset:0;z-index:20;pointer-events:none;}
+.gh-every{position:absolute;top:3.5%;left:2.5%;width:clamp(120px,16vw,240px);height:var(--corner-size);}
+.gh-joe{position:absolute;top:3%;right:3%;width:clamp(90px,11vw,170px);height:calc(var(--corner-size)*1.15);}
+.dept-center{position:fixed;top:3.5%;left:50%;transform:translateX(-50%);z-index:25;cursor:pointer;text-align:center;pointer-events:auto;}
+.dept-center .current{font-family:var(--font-display);font-weight:700;font-size:var(--corner-size);color:var(--white);line-height:1;}
+.dept-dropdown{display:flex;flex-direction:column;align-items:center;opacity:0;max-height:0;overflow:hidden;transition:opacity .35s,max-height .35s;}
+.dept-center:hover .dept-dropdown,.dept-center.open .dept-dropdown{opacity:1;max-height:600px;margin-top:.3em;}
+.dept-dropdown .d{font-family:var(--font-display);font-weight:700;color:var(--grey);font-size:clamp(16px,2.4vw,34px);line-height:1.2;cursor:pointer;transition:color .2s;white-space:nowrap;}
+.dept-dropdown .d:hover{color:var(--white);}
+.grid-scroll-hint{position:fixed;bottom:3%;left:50%;transform:translateX(-50%);z-index:22;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.6);animation:bob 2s ease infinite;pointer-events:none;}
+/* ================= 3. INDIVIDUAL ================= */
+#person{display:grid;grid-template-columns:1fr 1fr;}
+.p-left{position:relative;overflow:hidden;background:var(--black);}
+.p-left .pimg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .6s cubic-bezier(.5,0,.2,1),opacity .5s ease;}
+.p-left .pvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;transition:transform .6s cubic-bezier(.5,0,.2,1),opacity .5s ease;}
+.p-left.has-video .pimg{display:none;}
+.p-left.has-video .pvid{display:block;}
+.vid-mute{position:absolute;top:85%;left:2.5%;z-index:22;width:38px;height:38px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.5);background:rgba(0,0,0,.45);color:#fff;font-size:15px;cursor:pointer;
+  display:none;align-items:center;justify-content:center;transition:background .2s,transform .2s;backdrop-filter:blur(2px);}
+.vid-mute:hover{background:rgba(0,0,0,.7);transform:scale(1.08);}
+.p-left.has-video .vid-mute{display:flex;}
+.p-right{position:relative;overflow:hidden;background:var(--black);}
+.p-right .pbg{position:absolute;inset:0;background:url('assets/Bubbles.jpg') center/cover no-repeat;transition:transform .6s cubic-bezier(.5,0,.2,1),opacity .5s ease;}
+.person-perm-overlay{position:absolute;inset:0;background:rgba(0,0,0,.20);z-index:5;pointer-events:none;}
+.joe-human-custom{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:10;width:13.6%;height:76.5%;
+  background-image:url('assets/Joehuman_custom_1.png');background-size:contain;background-repeat:no-repeat;background-position:center;pointer-events:none;
+  transition:transform .6s cubic-bezier(.5,0,.2,1),opacity .5s ease;}
+.person-overlay{position:absolute;inset:0;background:rgba(0,0,0,.60);opacity:0;pointer-events:none;transition:opacity .35s ease;z-index:11;}
+.slide-up-out{transform:translateY(-100%)!important;opacity:0;}
+.slide-down-out{transform:translateY(100%)!important;opacity:0;}
+.joe-human-custom.slide-up-out{transform:translate(-50%,-160%)!important;opacity:0;}
+.joe-human-custom.slide-down-out{transform:translate(-50%,60%)!important;opacity:0;}
+.enter-from-bottom{transform:translateY(100%);opacity:0;}
+.enter-from-top{transform:translateY(-100%);opacity:0;}
+.joe-human-custom.enter-from-bottom{transform:translate(-50%,60%);opacity:0;}
+.joe-human-custom.enter-from-top{transform:translate(-50%,-160%);opacity:0;}
+.corner{position:absolute;z-index:20;}
+.corner.every{top:3.5%;left:2.5%;width:clamp(110px,15vw,220px);height:var(--corner-size);}
+.corner.joe{top:3%;right:3%;width:clamp(85px,10vw,160px);height:calc(var(--corner-size)*1.15);}
+.corner.knows{bottom:6%;left:2.5%;font-family:var(--font-display);font-weight:700;color:var(--white);font-size:var(--corner-size);line-height:1;}
+.corner.name{bottom:6%;right:2.5%;left:auto;text-align:right;font-family:var(--font-display);font-weight:700;font-size:var(--corner-size);color:var(--white);white-space:nowrap;line-height:1;transition:opacity .4s ease;}
+.corner.name .desig{position:absolute;top:100%;right:0;left:auto;text-align:right;font-size:.30em;font-weight:400;margin-top:.4em;}
+.corner.name .desig b{font-weight:700;}
+.p-dept-center{position:absolute;top:3.5%;left:50%;transform:translateX(-50%);z-index:30;cursor:pointer;text-align:center;}
+.p-dept-center .p-current{font-family:var(--font-display);font-weight:700;font-size:var(--corner-size);color:rgba(255,255,255,.28);transition:color .3s ease;line-height:1;}
+.p-dept-center:hover .p-current,.p-dept-center.open .p-current{color:var(--white);}
+.p-dept-dropdown{display:flex;flex-direction:column;align-items:center;opacity:0;max-height:0;overflow:hidden;transition:opacity .35s,max-height .35s;}
+.p-dept-center:hover .p-dept-dropdown,.p-dept-center.open .p-dept-dropdown{opacity:1;max-height:600px;margin-top:.3em;}
+.p-dept-dropdown .d{font-family:var(--font-display);font-weight:700;color:var(--grey);font-size:clamp(16px,2.4vw,34px);line-height:1.2;cursor:pointer;transition:color .2s;white-space:nowrap;}
+.p-dept-dropdown .d:hover{color:var(--white);}
+.carousel{position:absolute;top:50%;right:2.5%;left:auto;transform:translateY(-50%);width:min(38%,520px);z-index:20;color:var(--white);text-align:right;transition:opacity .4s ease;}
+.car-tabs{display:flex;justify-content:flex-end;gap:1.4em;font-size:clamp(11px,1vw,15px);margin-bottom:.6em;}
+.car-tabs span{color:rgba(255,255,255,.5);cursor:pointer;transition:color .2s;}
+.car-tabs span.active{color:var(--white);}
+.car-stage{position:relative;min-height:clamp(220px,26vw,340px);overflow:hidden;}
+.car-panel{position:absolute;top:0;right:0;width:100%;transition:transform .45s ease, opacity .45s ease;text-align:right;}
+.car-title{font-family:var(--font-display);font-weight:700;font-size:clamp(34px,4.6vw,72px);line-height:1;display:flex;justify-content:flex-end;align-items:baseline;gap:.25em;}
+.car-title em{font-family:var(--font-serif);font-style:italic;font-weight:400;font-size:.5em;}
+.car-body{font-family:var(--font-serif);font-size:clamp(17px,1.7vw,26px);line-height:1.4;margin-top:.6em;}
+.car-body em{font-style:italic;}
+.car-body ol{list-style:none;counter-reset:s;display:inline-block;text-align:left;line-height:0.8;}
+.car-body ol li{counter-increment:s;margin:.08em 0;}
+.car-body ol li::before{content:counter(s)".";display:inline-block;width:1.6em;}
+.car-arrow{position:absolute;top:50%;transform:translateY(-50%);font-size:clamp(30px,3vw,48px);cursor:pointer;user-select:none;opacity:.8;font-family:var(--font-serif);z-index:5;}
+.car-arrow:hover{opacity:1;}
+.car-arrow.prev{left:-14%;}.car-arrow.next{right:-6%;}
+.scroll-hint{position:absolute;bottom:6%;left:50%;transform:translateX(-50%);z-index:22;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.6);animation:bob 2s ease infinite;pointer-events:none;}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0);opacity:.5;}50%{transform:translateX(-50%) translateY(6px);opacity:.9;}}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;display:none;align-items:center;justify-content:center;}
+.modal.open{display:flex;}
+.login-box{background:#111;border:1px solid #333;padding:40px;width:320px;text-align:center;position:relative;}
+.login-logo{width:110px;height:26px;background-image:var(--logo-full);background-size:contain;background-repeat:no-repeat;background-position:center;margin:0 auto 26px;}
+.login-box input{width:100%;padding:12px;margin:6px 0;background:#000;border:1px solid #333;color:var(--white);font-family:var(--font-display);}
+.login-box button{width:100%;padding:12px;margin-top:14px;background:var(--teal);border:none;color:#000;font-weight:700;cursor:pointer;font-family:var(--font-display);}
+.login-box .close{position:absolute;top:14px;right:18px;cursor:pointer;font-size:22px;}
+.login-box .note{margin-top:14px;font-size:12px;color:#777;}
+@media(max-width:800px){
+  #home{grid-template-columns:1fr;}
+  .home__left{display:none;}
+  .home-menu{left:0;right:auto;transform:translate(0,-50%);top:50%;width:auto;align-items:flex-start;padding-left:6vw;}
+  .home-menu .stack{align-items:flex-start;margin-right:0;}
+  .home-menu.open .stack{transform:translateY(-40px);}
+  .home-menu .dept{text-align:left;font-size:clamp(18px,5.5vw,30px);}
+  .tagline{width:auto;text-align:center;margin-left:0;}
+  .grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:40vh;}
+  #person{grid-template-columns:1fr;grid-template-rows:1fr 1fr;}
+  .p-left{height:auto;}
+  .p-right{height:auto;}
+  .joe-human-custom{width:23.12%;height:29.92%;}
+  .carousel{top:auto;bottom:10%;right:auto;left:50%;transform:translateX(-50%);width:88%;text-align:center;}
+  .car-tabs{justify-content:center;}
+  .car-title{justify-content:center;}
+  .car-stage{min-height:150px;}
+  .car-arrow.prev{left:-2%;}.car-arrow.next{right:-2%;}
+  .corner.name{bottom:2%;right:4%;font-size:clamp(22px,6vw,40px);}
+  .corner.knows{bottom:2%;left:4%;font-size:clamp(22px,6vw,40px);}
+  .corner.every{width:clamp(90px,26vw,160px);}
+  .corner.joe{width:clamp(70px,18vw,120px);}
+}
+</style>
+</head>
+<body>
+<div class="topnav">
+  <div class="btn" id="loginTab"><span class="dot"></span> login</div>
+  <div class="btn" id="homeBtn">⌂ home</div>
+</div>
+<!-- 1. HOME -->
+<section class="screen active" id="home">
+  <div class="home__left"></div>
+  <div class="home__right"><div class="slideshow" id="homeSlideshow"></div></div>
+  <div class="home-perm-overlay"></div>
+  <div class="home-center">
+    <div class="logo-wrap" id="logoWrap">
+      <div class="logo-img-el el-full logo-full-img" role="img" aria-label="every Joe"></div>
+      <p class="tagline">Is a <em>genius</em>,<br>in some way,<br>or another.</p>
+    </div>
+    <div class="home-menu" id="homeMenu">
+      <div class="stack">
+        <div class="dept" data-dept="admin">admin</div>
+        <div class="dept" data-dept="finance">finance</div>
+        <div class="dept" data-dept="creative">creative</div>
+        <div class="dept" data-dept="facilities">facilities</div>
+        <div class="dept" data-dept="marketing">marketing</div>
+        <div class="dept" data-dept="client service">client service</div>
+        <div class="dept" data-dept="growth of people">growth of people</div>
+        <div class="spacer"></div>
+        <div class="dept" data-dept="production">production</div>
+        <div class="dept" data-dept="strategy">strategy</div>
+        <div class="dept" data-dept="leadJoe">leadJoe</div><div class="dept" data-dept="craft">craft</div>
+        <div class="dept" data-dept="BI">BI</div>
+        <div class="dept" data-dept="IT">IT</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 2. GRID -->
+<section class="screen" id="dept">
+  <div class="grid-scroll"><div class="grid" id="grid"></div></div>
+  <div class="grid-overlay"></div>
+  <div class="grid-header">
+    <div class="logo-img-el el-every gh-every" role="img" aria-label="every"></div>
+    <div class="logo-img-el el-joe gh-joe" role="img" aria-label="Joe"></div>
+  </div>
+  <div class="dept-center" id="deptCenter">
+    <div class="current" id="deptCurrent">creative</div>
+    <div class="dept-dropdown" id="deptDropdown"></div>
+  </div>
+  <div class="grid-scroll-hint">scroll ↓ more</div>
+</section>
+<!-- 3. INDIVIDUAL -->
+<section class="screen" id="person">
+  <div class="p-left" id="pLeft">
+    <div class="pimg" id="pImg"></div>
+    <video class="pvid" id="pVid" muted loop playsinline preload="auto"></video>
+    <button class="vid-mute" id="vidMute" title="mute / unmute">🔇</button>
+  </div>
+  <div class="p-right"><div class="pbg" id="pBg"></div></div>
+  <div class="person-perm-overlay"></div>
+  <div class="joe-human-custom" id="joeHuman"></div>
+  <div class="person-overlay" id="personOverlay"></div>
+  <div class="carousel" id="carousel">
+    <div class="car-tabs"><span data-i="0">Purpose Word</span><span data-i="1">Top 5 Strengths</span><span data-i="2">Growth</span></div>
+    <div class="car-stage" id="carStage"></div>
+    <div class="car-arrow prev" id="carPrev">‹</div>
+    <div class="car-arrow next" id="carNext">›</div>
+  </div>
+  <div class="logo-img-el el-every corner every" role="img" aria-label="every"></div>
+  <div class="logo-img-el el-joe corner joe" role="img" aria-label="Joe"></div>
+  <div class="corner knows">knows</div>
+  <div class="corner name" id="pName"></div>
+  <div class="p-dept-center" id="pDeptCenter">
+    <div class="p-current" id="pDeptGhost">creative</div>
+    <div class="p-dept-dropdown" id="pDeptDropdown"></div>
+  </div>
+  <div class="scroll-hint">scroll ↕ team</div>
+</section>
+<!-- LOGIN MODAL -->
+<div class="modal" id="loginModal">
+  <div class="login-box">
+    <span class="close" id="loginClose">×</span>
+    <div class="login-logo" role="img" aria-label="every Joe"></div>
+    <input type="text" placeholder="username">
+    <input type="password" placeholder="password">
+    <button>log in</button>
+    <p class="note">Editing &amp; superuser access — Phase 5</p>
+  </div>
+</div>
+<script>
+const DEPARTMENTS=["admin","finance","creative","strategy","facilities","marketing","growth of people","client service","production","leadJoe","craft","BI","IT"];
+
+const JOES={creative:[
+  {name:"Martin Schlumf",img:"assets/Martin-Schlumf.jpg",bg:"assets/Birds_Free3.jpg",joe:"assets/Joehuman_custom_12.png",desig:"Executive Creative Director | <b>Joe Public</b>",purpose:{word:"Strength",statement:"To help the people around me realise their inner <em>strength</em> by realising the strength I have in myself."},top5:["Achiever","Learner","Deliberative","Futuristic","Strategic"],growth:["<em>13</em> years at Joe","<em>8 September</em> Birthday"]},
+  {name:"Tshepo Mogorosi",img:"assets/Tshepo-Mogorosi.jpg",bg:"assets/Basketball.jpg",joe:"assets/Joehuman_custom_10.png",desig:"Integrated Creative Director | <b>Joe Public</b>",purpose:{word:"Love",statement:"To plant a seed of <em>love</em> in everything I touch."},top5:["Ideation","Developer","Responsibility","Activator","Positivity"],growth:["<em>15</em> years at Joe","<em>22 November</em> Birthday"]},
+  {name:"Adam Weber",img:"assets/Adam-Weber.jpg",bg:"assets/Pool.jpg",joe:"assets/Joehuman_custom_9.png",desig:"Executive Creative Director | <b>Joe Public</b>",purpose:{word:"Amazing",statement:"to bring out the amazing in those around me <em>through</em> being amazing."},top5:["Strategic","Adaptability","Communication","Arranger","Developer"],growth:["<em>8</em> years at Joe","<em>4 January</em> Birthday"]},
+  {name:"Assaf Levy",img:"assets/Assaf-Levy.jpg",bg:"assets/Cactus.jpg",joe:"assets/Joehuman_custom_8.png",desig:"Executive Creative Director | <b>Joe Public</b>",purpose:{word:"Brave",statement:"To help others be brave <em>through</em> being brave."},top5:["Restorative","Responsibility","Relator","Learner","Ideation"],growth:["<em>7</em> years at Joe","<em>4 Nov</em> Birthday"]},
+  {name:"Brandon Govender",img:"assets/Brandon-Govender.jpg",bg:"assets/Birds_Free1.jpg",joe:"assets/Joehuman_custom_7.png",desig:"Executive Creative Director | <b>Braid</b>",purpose:{word:"Craft",statement:"To honour the <em>craft</em> in every detail."},top5:["Ideation","Futuristic","Strategic","Achiever","Learner"],growth:["<em>5</em> years at Joe","<em>30 Jan</em> Birthday"]},
+  {name:"Claudi Potter",img:"assets/Claudi-Potter.jpg",bg:"assets/Cake.jpg",joe:"assets/Joehuman_custom_6.png",desig:"Executive Creative Director | <b>Joe Public London</b>",purpose:{word:"Curious",statement:"To stay <em>curious</em> and always keep learning."},top5:["Strategic","Achiever","Maximizer","Intellection","Arranger"],growth:["<em>6</em> years at Joe","<em>5 May</em> Birthday"]},
+  {name:"Michelle McKenna",img:"assets/Michelle-Mckenna.jpg",bg:"assets/Donald.jpeg",joe:"assets/Joehuman_custom_5.png",desig:"Creative Director | <b>Joe Public</b>",purpose:{word:"Free",statement:"To <em>free</em> others to live, wholehearted, by freeing myself to live, wholehearted."},top5:["Learner","Responsibility","Achiever","Relator","Input"],growth:["<em>4</em> years at Joe","<em>18 March</em> Birthday"]},
+  {name:"Pepe Marais",img:"assets/Pepe-Marais.jpg",bg:"assets/Space.jpg",joe:"assets/Joehuman_custom_11.png",desig:"Chief Vision and Purpose Officer | <b>Joe Public</b>",purpose:{word:"Greatness",statement:"To bring out the best in those around me, <em>through</em> bringing out the best in myself."},top5:["Strategic","Achiever","Futuristic","Relator","Competition"],growth:["<em>25</em> years at Joe","<em>5 November</em> Birthday"]},
+  {name:"Tshepo Tumahole",img:"assets/Tshepo-Tumahole.jpg",bg:"assets/Orange.jpeg",joe:"assets/Joehuman_custom_4.png",desig:"Integrated Creative Director | <b>Joe Public</b>",purpose:{word:"Story",statement:"To tell the <em>story</em> that connects us all."},top5:["Competition","Futuristic","Strategic","Achiever","Deliberative"],growth:["<em>9</em> years at Joe","<em>15 July</em> Birthday"]},{name:"Jack Singer",img:"assets/Jack.png",bg:"assets/Space.jpg",joe:"assets/Joehuman_custom_11.png",desig:"Chief Vision and Purpose Officer | <b>Joe Public</b>",purpose:{word:"Greatness",statement:"To bring out the best in those around me, <em>through</em> bringing out the best in myself."},top5:["Strategic","Achiever","Futuristic","Relator","Competition"],growth:["<em>25</em> years at Joe","<em>5 November</em> Birthday"]},
+  {name:"Tshepo Komari",img:"assets/Tsepo.png",bg:"assets/Orange.jpeg",joe:"assets/Joehuman_custom_4.png",desig:"Copywriter | <b>Joe Public</b>",purpose:{word:"Story",statement:"To tell the <em>story</em> that connects us all."},top5:["Competition","Futuristic","Strategic","Achiever","Deliberative"],growth:["<em>9</em> years at Joe","<em>15 July</em> Birthday"]},
+  {name:"Xolisa Dyeshana",img:"assets/Xolisa-Dyeshana.jpg",bg:"assets/Boot.jpg",joe:"assets/Joehuman_custom_3.png",desig:"Chief Creative Officer | <b>Joe Public</b>",purpose:{word:"Joy",statement:"To inspire joy in others <em>through</em> cultivating it within myself first."},top5:["Connectedness","Positivity","Learner","Communication","Individualization"],growth:["<em>12</em> years at Joe","<em>29 December</em> Birthday"]}
+]};
+
+/* ---------- REAL named people for specific departments ---------- */
+const REAL={
+  craft:[
+    {name:"Jiri Miovsky",img:"assets/Jiri-Miovsky.jpg",video:"assets/Jiri.mp4",bg:"assets/git.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Motion Graphics Design Director | <b>Joe Public</b>",purpose:{word:"Brave",statement:"To be brave <em>through</em> leading by example."},top5:["Strategic","Significance","Restorative","Futuristic","Activator"],growth:["<em>8</em> years at Joe","<em>3 October</em> Birthday"]},
+     {name:"Sergio Da Cruz",img:"assets/Sergio.jpeg",bg:"assets/gibs.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Sound Engineer | <b>Joe Public</b>",purpose:{word:"Passion",statement:"To drive passion <em>through</em> to others around me."},top5:["Strategic","Significance","Restorative","Futuristic","Activator"],growth:["<em>8</em> years at Joe","<em>3 October</em> Birthday"]}
+  ],
+   leadJoe:[
+    {name:"Gareth Leck",img:"assets/Gareth-Leck.jpg",bg:"assets/Birds_Free6.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Group CEO | <b>Joe Public</b>",purpose:{word:"Creativity",statement:"To be brave <em>through</em> leading by example."},top5:["Strategic","Significance","Restorative","Futuristic","Activator"],growth:["<em>8</em> years at Joe","<em>3 October</em> Birthday"]},{name:"Pepe Marais",img:"assets/Pepe-Marais.jpg",bg:"assets/Space.jpg",joe:"assets/Joehuman_custom_11.png",desig:"Chief Vision and Purpose Officer | <b>Joe Public</b>",purpose:{word:"Greatness",statement:"To bring out the best in those around me, <em>through</em> bringing out the best in myself."},top5:["Strategic","Achiever","Futuristic","Relator","Competition"],growth:["<em>25</em> years at Joe","<em>5 November</em> Birthday"]},{name:"Khuthala Gala-Holten",img:"assets/Khuthala.png",bg:"assets/Birds_Free6.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Managing Director | <b>Braid</b>",purpose:{word:"Creativity",statement:"To be brave <em>through</em> leading by example."},top5:["Strategic","Significance","Restorative","Futuristic","Activator"],growth:["<em>8</em> years at Joe","<em>3 October</em> Birthday"]},{name:"Mpume Ngobese",img:"assets/Mpume Ngobese.jpg",bg:"assets/Space.jpg",joe:"assets/Joehuman_custom_11.png",desig:"Managing Director | <b>Joe Public</b>",purpose:{word:"Greatness",statement:"To bring out the best in those around me, <em>through</em> bringing out the best in myself."},top5:["Strategic","Achiever","Futuristic","Relator","Competition"],growth:["<em>25</em> years at Joe","<em>5 November</em> Birthday"]},{name:"Laurent Marty",img:"assets/Laurent-Marty.jpg",bg:"assets/Birds_Free5.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Group Chief Strategic Officer | <b>Joe Public</b>",purpose:{word:"Vision",statement:"To lead with <em>vision</em> and strategic clarity."},top5:["Strategic","Futuristic","Analytical","Command","Ideation"],growth:["<em>14</em> years at Joe","<em>2 April</em> Birthday"]},{name:"Xolisa Dyeshana",img:"assets/Xolisa-Dyeshana.jpg",bg:"assets/Boot.jpg",joe:"assets/Joehuman_custom_3.png",desig:"Chief Creative Officer | <b>Joe Public</b>",purpose:{word:"Joy",statement:"To inspire joy in others <em>through</em> cultivating it within myself first."},top5:["Connectedness","Positivity","Learner","Communication","Individualization"],growth:["<em>12</em> years at Joe","<em>29 December</em> Birthday"]}
+  ],
+  strategy:[
+    {name:"Laurent Marty",img:"assets/Laurent-Marty.jpg",bg:"assets/Birds_Free5.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Group Chief Strategic Officer | <b>Joe Public</b>",purpose:{word:"Vision",statement:"To lead with <em>vision</em> and strategic clarity."},top5:["Strategic","Futuristic","Analytical","Command","Ideation"],growth:["<em>14</em> years at Joe","<em>2 April</em> Birthday"]},
+    {name:"Courtney Mocke",img:"assets/Courtney-Mocke.jpg",bg:"assets/Birds_Free4.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Strategist | <b>Joe Public</b>",purpose:{word:"Insight",statement:"To uncover the <em>insight</em> that unlocks great work."},top5:["Analytical","Learner","Input","Intellection","Ideation"],growth:["<em>3</em> years at Joe","<em>19 August</em> Birthday"]}
+  ],
+  "growth of people":[
+    {name:"Rika Nell",img:"assets/Rika-Nell.jpg",bg:"assets/Bubbles.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Group Talent Director | <b>Joe Public</b>",purpose:{word:"People",statement:"To grow <em>people</em> so they can grow others."},top5:["Developer","Relator","Individualization","Positivity","Empathy"],growth:["<em>11</em> years at Joe","<em>7 February</em> Birthday"]},{name:"Neo Moleleki",img:"assets/Neo.png",bg:"assets/Bubbles.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Group HR Manager | <b>Joe Public</b>",purpose:{word:"People",statement:"To grow <em>people</em> so they can grow others."},top5:["Developer","Relator","Individualization","Positivity","Empathy"],growth:["<em>11</em> years at Joe","<em>7 February</em> Birthday"]}
+  ],
+  "client service":[
+  {name:"Kelly Bardon",img:"assets/Kelly-Bardon.jpg",bg:"assets/Eggs.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Business Unit Director | <b>Joe Public</b>",purpose:{word:"Great",statement:"To live and be great <em>through</em> assertive, yet kind leadership."},top5:["Adaptability","Maximizer","Consistency","Self-Assurance","Strategic"],growth:["<em>5</em> years at Joe","<em>6 March</em> Birthday"]},{name:"Andrew Wright",img:"assets/Andrew-Wright.jpg",bg:"assets/Eggs.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Business Unit Director | <b>Joe Public</b>",purpose:{word:"Great",statement:"To live and be great <em>through</em> assertive, yet kind leadership."},top5:["Adaptability","Maximizer","Consistency","Self-Assurance","Strategic"],growth:["<em>5</em> years at Joe","<em>6 March</em> Birthday"]},
+    {name:"Nina Fredericksz",img:"assets/Nina-.jpg",bg:"assets/Birds_Free3.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Business Unit Director | <b>Joe Public</b>",purpose:{word:"Trust",statement:"To build <em>trust</em> in every client relationship."},top5:["Relator","Responsibility","Communication","Harmony","Consistency"],growth:["<em>6</em> years at Joe","<em>12 October</em> Birthday"]},
+    {name:"Phindile Ndzekeli",img:"assets/Phindile-Ndzekeli.jpg",bg:"assets/Seat.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Business Unit Director | <b>Joe Public</b>",purpose:{word:"Connection",statement:"To create <em>connection</em> between people and brands."},top5:["Woo","Communication","Positivity","Includer","Activator"],growth:["<em>7</em> years at Joe","<em>24 June</em> Birthday"]},{name:"Abigail Buckley",img:"assets/Abigail Buckley.jpg",bg:"assets/Seat.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Business Unit Director | <b>Joe Public</b>",purpose:{word:"Connection",statement:"To create <em>connection</em> between people and brands."},top5:["Woo","Communication","Positivity","Includer","Activator"],growth:["<em>7</em> years at Joe","<em>24 June</em> Birthday"]}
+  ],
+  finance:[
+    {name:"Bianca Raghuber",img:"assets/Bianca-Raghuber.jpeg",bg:"assets/Shake.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Group Financial Director | <b>Joe Public</b>",purpose:{word:"Order",statement:"To bring <em>order</em> so creativity can thrive."},top5:["Discipline","Analytical","Responsibility","Deliberative","Consistency"],growth:["<em>10</em> years at Joe","<em>3 December</em> Birthday"]}
+  ],
+  marketing:[
+    {name:"Jabula Ngobese",img:"assets/Jabula-Ngobese.jpg",bg:"assets/Burger.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Brand Manager | <b>Joe Public</b>",purpose:{word:"Story",statement:"To tell the <em>story</em> that makes brands loved."},top5:["Communication","Woo","Ideation","Positivity","Strategic"],growth:["<em>4</em> years at Joe","<em>16 May</em> Birthday"]}
+    ],
+    production:[
+    {name:"Tammy Chetty",img:"assets/Tammy Chetty.jpg",bg:"assets/Burger.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Senior Stills Producer | <b>Joe Public</b>",purpose:{word:"Story",statement:"To tell the <em>story</em> that makes brands loved."},top5:["Communication","Woo","Ideation","Positivity","Strategic"],growth:["<em>4</em> years at Joe","<em>16 May</em> Birthday"]},{name:"Diane Cole",img:"assets/Di-Cole.jpg",bg:"assets/Seat.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Head of TV and Radio | <b>Joe Public</b>",purpose:{word:"Story",statement:"To tell the <em>story</em> that makes brands loved."},top5:["Communication","Woo","Ideation","Positivity","Strategic"],growth:["<em>4</em> years at Joe","<em>16 May</em> Birthday"]},{name:"Shawn Holten",img:"assets/Shawn Holten.jpg",bg:"assets/Birds_Free1.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Senior DTP Operator | <b>Joe Public</b>",purpose:{word:"Story",statement:"To tell the <em>story</em> that makes brands loved."},top5:["Communication","Woo","Ideation","Positivity","Strategic"],growth:["<em>4</em> years at Joe","<em>16 May</em> Birthday"]},{name:"Fuad Rangraze",img:"assets/Fuad Rangraze.jpg",bg:"assets/Burger.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Head of DTP | <b>Joe Public</b>",purpose:{word:"Story",statement:"To tell the <em>story</em> that makes brands loved."},top5:["Communication","Woo","Ideation","Positivity","Strategic"],growth:["<em>4</em> years at Joe","<em>16 May</em> Birthday"]},{name:"Evelyn Bonase",img:"assets/Evelyn Bonase.jpg",bg:"assets/Birds_Free1.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Radio Producer | <b>Joe Public</b>",purpose:{word:"Story",statement:"To tell the <em>story</em> that makes brands loved."},top5:["Communication","Woo","Ideation","Positivity","Strategic"],growth:["<em>4</em> years at Joe","<em>16 May</em> Birthday"]},{name:"Phindi Mokoena",img:"assets/Phindi Mokoena.jpg",bg:"assets/Birds_Free1.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Traffic Manager | <b>Joe Public</b>",purpose:{word:"Story",statement:"To tell the <em>story</em> that makes brands loved."},top5:["Communication","Woo","Ideation","Positivity","Strategic"],growth:["<em>4</em> years at Joe","<em>16 May</em> Birthday"]}
+    ],
+     IT:[
+    {name:"Joseph Mokone",img:"assets/Joseph-Mokone.jpg",bg:"assets/Burger.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Senior IT Technician | <b>Joe Public</b>",purpose:{word:"Story",statement:"To tell the <em>story</em> that makes brands loved."},top5:["Communication","Woo","Ideation","Positivity","Strategic"],growth:["<em>4</em> years at Joe","<em>16 May</em> Birthday"]}
+  ],
+  admin:[
+    {name:"Michele Lazarus",img:"assets/Mich Lazarus.jpg",bg:"assets/Burger.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Awards and Special projects | <b>Joe Public</b>",purpose:{word:"Formidable",statement:"To tell the <em>story</em> that makes brands loved."},top5:["Communication","Woo","Ideation","Positivity","Strategic"],growth:["<em>4</em> years at Joe","<em>16 May</em> Birthday"]}
+  ]
+};
+
+/* ---------- DUMMY filler generator ---------- */
+const DUMMY_COLORS=["#17b0a7","#9e5ec4","#f7a1c2","#CCFF00","#2b2c6b","#5a4436","#3a4a6a","#6a3a5a"];
+const FIRST=["Alex","Jordan","Sam","Robin","Casey","Morgan","Taylor","Jamie","Riley","Quinn","Avery","Reese"];
+const LAST=["Nkosi","Adams","Petersen","Naidoo","Botha","Dlamini","Meyer","Khan","Roos","Sithole","Fisher","Van Wyk"];
+const WORDS=["Purpose","Drive","Focus","Impact","Balance","Growth","Trust","Clarity","Momentum","Heart","Spark","Care"];
+const STRENGTHS=["Strategic","Achiever","Learner","Ideation","Relator","Focus","Positivity","Communication","Analytical","Responsibility","Futuristic","Developer","Input","Command","Empathy"];
+const ROLES={
+  admin:["Office Manager","Administrator","Executive Assistant","Receptionist","Operations Coordinator"],
+  finance:["Management Accountant","Bookkeeper","Financial Analyst","Payroll Specialist","Accounts Clerk"],
+  strategy:["Senior Strategist","Brand Strategist","Data Strategist","Junior Strategist","Comms Strategist"],
+  craft:["Senior Motion Designer","3D Artist","Illustrator","Retoucher","Craft Lead"],
+  facilities:["Facilities Manager","Maintenance Lead","Groundskeeper","Health & Safety Officer","Facilities Coordinator"],
+  marketing:["Marketing Director","Social Media Lead","Marketing Coordinator","PR Specialist","Content Manager"],
+  "growth of people":["Talent Partner","L&D Specialist","Recruiter","People Coordinator","HR Business Partner"],
+  "client service":["Account Director","Account Manager","Account Executive","Client Partner","Account Coordinator"],
+  production:["Head of Production","Producer","Production Manager","Traffic Manager","Production Coordinator"],
+  leadJoe:["Chief Executive Officer","Chief Operating Officer","Managing Director","Chief Financial Officer","Chief People Officer"],
+  BI:["BI Director","Data Analyst","Insights Lead","Data Engineer","Reporting Specialist"],
+  IT:["IT Director","Systems Administrator","IT Support Lead","Network Engineer","Helpdesk Technician"]
+};
+function pick(arr,i){return arr[i%arr.length];}
+function makeDummy(dept,count,offset){
+  const roles=ROLES[dept]||["Team Member","Team Member","Team Member","Team Member","Team Member"];
+  const team=[];
+  for(let i=0;i<count;i++){
+    const idx=i+offset;
+    team.push({
+      name:`${pick(FIRST,idx+dept.length)} ${pick(LAST,idx*2+dept.length)}`,
+      color:DUMMY_COLORS[idx%DUMMY_COLORS.length],
+      joe:"assets/Joehuman_custom_1.png",
+      desig:`${pick(roles,idx)} | <b>Joe Public</b>`,
+      purpose:{word:pick(WORDS,idx+dept.length), statement:`To bring <em>${pick(WORDS,idx+dept.length).toLowerCase()}</em> to everything the ${dept} team does.`},
+      top5:[pick(STRENGTHS,idx),pick(STRENGTHS,idx+3),pick(STRENGTHS,idx+6),pick(STRENGTHS,idx+9),pick(STRENGTHS,idx+12)],
+      growth:[`<em>${2+i*2}</em> years at Joe`,`<em>${1+i*5} ${["January","April","June","August","November"][i%5]}</em> Birthday`]
+    });
+  }
+  return team;
+}
+DEPARTMENTS.forEach(d=>{
+  if(d==='creative')return;
+  const real=REAL[d]||[];
+  const need=Math.max(0,5-real.length);
+  JOES[d]=[...real, ...makeDummy(d,need,real.length)];
+});
+
+const homeSlideshow=document.getElementById('homeSlideshow');
+/* gather every real-photo person across ALL departments (de-duped) */
+const slideImgs=[];
+Object.keys(JOES).forEach(dept=>{
+  JOES[dept].forEach(j=>{
+    if(j && j.img && !slideImgs.includes(j.img)) slideImgs.push(j.img);
+  });
+});
+slideImgs.forEach((src,i)=>{const s=document.createElement('div');s.className='slide'+(i===0?' active':'');s.style.backgroundImage=`url('${src}')`;homeSlideshow.appendChild(s);});
+const slides=homeSlideshow.querySelectorAll('.slide');let ci=0;
+setInterval(()=>{slides[ci].classList.remove('active');ci=(ci+1)%slides.length;slides[ci].classList.add('active');},1800);
+
+const screens={home:document.getElementById('home'),dept:document.getElementById('dept'),person:document.getElementById('person')};
+const homeBtn=document.getElementById('homeBtn');
+function show(id){Object.values(screens).forEach(s=>s.classList.remove('active'));screens[id].classList.add('active');homeBtn.style.display=id==='home'?'none':'flex';}
+homeBtn.onclick=()=>show('home');
+
+const logoWrap=document.getElementById('logoWrap'),homeMenu=document.getElementById('homeMenu');
+const isTouch=window.matchMedia('(hover:none)').matches;
+if(isTouch){logoWrap.addEventListener('click',(e)=>{e.stopPropagation();homeMenu.classList.toggle('open');});}
+document.querySelectorAll('#homeMenu .dept').forEach(el=>{el.onclick=e=>{e.stopPropagation();homeMenu.classList.remove('open');openDept(el.dataset.dept);};});
+
+const grid=document.getElementById('grid'),deptCurrent=document.getElementById('deptCurrent'),deptDropdown=document.getElementById('deptDropdown'),deptCenter=document.getElementById('deptCenter');
+function openDept(dept){deptCurrent.textContent=dept;grid.innerHTML='';
+  (JOES[dept]||[]).forEach((j,idx)=>{const t=document.createElement('div');
+    if(j.blank){t.className='tile blank';t.style.background=j.color;grid.appendChild(t);return;}
+    t.className='tile';
+    const ph = j.img ? `background-image:url('${j.img}')` : (j.color ? `background:${j.color}` : '');
+    t.innerHTML=`<div class="ph" style="${ph}"></div><div class="info"><div class="name">${j.name}</div><div class="desig">${j.desig}</div></div>`;
+    t.onclick=()=>openPerson(dept,idx);grid.appendChild(t);});
+  deptDropdown.innerHTML='';DEPARTMENTS.filter(d=>d!==dept).forEach(d=>{const el=document.createElement('div');el.className='d';el.textContent=d;el.onclick=ev=>{ev.stopPropagation();deptCenter.classList.remove('open');openDept(d);};deptDropdown.appendChild(el);});
+  show('dept');document.querySelector('.grid-scroll').scrollTop=0;}
+if(isTouch){deptCenter.addEventListener('click',(e)=>{if(e.target.closest('.d'))return;deptCenter.classList.toggle('open');});}
+
+const pLeft=document.getElementById('pLeft'),pName=document.getElementById('pName'),pImg=document.getElementById('pImg'),pVid=document.getElementById('pVid'),pBg=document.getElementById('pBg'),pDeptGhost=document.getElementById('pDeptGhost'),joeHuman=document.getElementById('joeHuman');
+const pDeptDropdown=document.getElementById('pDeptDropdown'),personOverlay=document.getElementById('personOverlay'),pDeptCenter=document.getElementById('pDeptCenter');
+const carousel=document.getElementById('carousel'),carStage=document.getElementById('carStage'),carTabs=document.querySelectorAll('.car-tabs span');
+const vidMute=document.getElementById('vidMute');
+let curDept='creative',curIdx=0,curJoe=null,panel=0;
+
+function clickableTeam(dept){return JOES[dept].filter(j=>!j.blank);}
+
+function applyPerson(j){curJoe=j;pDeptGhost.textContent=curDept;
+  pName.innerHTML=`${j.name}<span class="desig">${j.desig}</span>`;
+  if(j.video){
+    pLeft.classList.add('has-video');
+    pVid.src=j.video; pVid.muted=true; pVid.play().catch(()=>{});
+    vidMute.textContent='🔇';
+  } else {
+    pLeft.classList.remove('has-video');
+    pVid.pause(); pVid.removeAttribute('src'); pVid.load();
+    pImg.style.background = j.img ? `url('${j.img}') center/cover no-repeat` : (j.color || '');
+  }
+  pBg.style.background = j.bg ? `url('${j.bg}') center/cover no-repeat` : (j.color ? j.color : `url('assets/Basketball.jpg') center/cover no-repeat`);
+  joeHuman.style.backgroundImage=`url('${j.joe || 'assets/Joehuman_custom_1.png'}')`;
+  panel=0;initPanel();}
+
+function openPerson(dept,gridIdx){curDept=dept;
+  const team=clickableTeam(dept);const person=JOES[dept][gridIdx];curIdx=team.indexOf(person);
+  pDeptDropdown.innerHTML='';DEPARTMENTS.filter(d=>d!==dept).forEach(d=>{const el=document.createElement('div');el.className='d';el.textContent=d;el.onclick=ev=>{ev.stopPropagation();pDeptCenter.classList.remove('open');openDept(d);};pDeptDropdown.appendChild(el);});
+  applyPerson(person);show('person');}
+
+pDeptCenter.addEventListener('mouseenter',()=>personOverlay.style.opacity='1');
+pDeptCenter.addEventListener('mouseleave',()=>personOverlay.style.opacity='0');
+if(isTouch){pDeptCenter.addEventListener('click',(e)=>{if(e.target.closest('.d'))return;pDeptCenter.classList.toggle('open');personOverlay.style.opacity=pDeptCenter.classList.contains('open')?'1':'0';});}
+
+vidMute.onclick=(e)=>{e.stopPropagation();pVid.muted=!pVid.muted;vidMute.textContent=pVid.muted?'🔇':'🔊';};
+
+let scrolling=false;
+function scrollTeam(dir){
+  if(scrolling)return;scrolling=true;
+  const team=clickableTeam(curDept);
+  const nextIdx=(curIdx + dir + team.length) % team.length;
+  const outImg = dir>0 ? 'slide-up-out' : 'slide-down-out';
+  pImg.classList.add(outImg);pVid.classList.add(outImg);pBg.classList.add(outImg);joeHuman.classList.add(outImg);
+  pName.style.opacity='0';carousel.style.opacity='0';
+  setTimeout(()=>{
+    curIdx=nextIdx;applyPerson(team[curIdx]);
+    const enter = dir>0 ? 'enter-from-bottom' : 'enter-from-top';
+    [pImg,pVid,pBg,joeHuman].forEach(el=>{el.style.transition='none';el.classList.remove('slide-up-out','slide-down-out');el.classList.add(enter);});
+    void pImg.offsetWidth;
+    [pImg,pVid,pBg,joeHuman].forEach(el=>{el.style.transition='';el.classList.remove('enter-from-bottom','enter-from-top');});
+    pName.style.opacity='1';carousel.style.opacity='1';
+    setTimeout(()=>{scrolling=false;},550);
+  },520);
+}
+document.getElementById('person').addEventListener('wheel',(e)=>{
+  if(!screens.person.classList.contains('active'))return;
+  e.preventDefault();
+  if(Math.abs(e.deltaY)<8)return;
+  scrollTeam(e.deltaY>0?1:-1);
+},{passive:false});
+
+let touchStartX=null,touchStartY=null;
+const personEl=document.getElementById('person');
+personEl.addEventListener('touchstart',(e)=>{
+  if(!screens.person.classList.contains('active'))return;
+  touchStartX=e.touches[0].clientX;touchStartY=e.touches[0].clientY;
+},{passive:true});
+personEl.addEventListener('touchend',(e)=>{
+  if(!screens.person.classList.contains('active')||touchStartX===null)return;
+  const dx=touchStartX - e.changedTouches[0].clientX;
+  const dy=touchStartY - e.changedTouches[0].clientY;
+  if(Math.abs(dx)>Math.abs(dy)){
+    if(Math.abs(dx)>50){ goTo(dx>0 ? (panel+1)%3 : (panel+2)%3); }
+  } else {
+    if(Math.abs(dy)>50){ scrollTeam(dy>0?1:-1); }
+  }
+  touchStartX=null;touchStartY=null;
+},{passive:true});
+
+function panelHTML(p){let h='';
+  if(p===0)h=`<div class="car-title">${curJoe.purpose.word}</div><div class="car-body">${curJoe.purpose.statement}</div>`;
+  if(p===1)h=`<div class="car-title">Top 5 <em>strengths</em></div><div class="car-body"><ol>${curJoe.top5.map(s=>`<li>${s}</li>`).join('')}</ol></div>`;
+  if(p===2)h=`<div class="car-title">Growth</div><div class="car-body">${curJoe.growth.map(g=>`<div>${g}</div>`).join('')}</div>`;
+  return h;}
+function setTabs(){carTabs.forEach((t,i)=>t.classList.toggle('active',i===panel));}
+function initPanel(){carStage.innerHTML=`<div class="car-panel" style="transform:translateX(0);opacity:1">${panelHTML(panel)}</div>`;setTabs();}
+function goTo(target){
+  if(target===panel)return;const dir=target>panel?1:-1;
+  const oldPanel=carStage.querySelector('.car-panel');
+  const newPanel=document.createElement('div');newPanel.className='car-panel';newPanel.innerHTML=panelHTML(target);
+  newPanel.style.transform=`translateX(${dir>0?'60px':'-60px'})`;newPanel.style.opacity='0';carStage.appendChild(newPanel);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    newPanel.style.transform='translateX(0)';newPanel.style.opacity='1';
+    oldPanel.style.transform=`translateX(${dir>0?'-60px':'60px'})`;oldPanel.style.opacity='0';}));
+  setTimeout(()=>oldPanel.remove(),480);panel=target;setTabs();
+}
+document.getElementById('carPrev').onclick=()=>goTo((panel+2)%3);
+document.getElementById('carNext').onclick=()=>goTo((panel+1)%3);
+carTabs.forEach(t=>t.onclick=()=>goTo(+t.dataset.i));
+
+const modal=document.getElementById('loginModal');
+document.getElementById('loginTab').onclick=()=>modal.classList.add('open');
+document.getElementById('loginClose').onclick=()=>modal.classList.remove('open');
+modal.onclick=e=>{if(e.target===modal)modal.classList.remove('open');};
+</script>
+</body>
+</html>
