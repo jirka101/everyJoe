@@ -21,7 +21,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 input{-webkit-user-select:text;user-select:text;}
-.dept,.d,.tile,.car-tabs span,.car-arrow,.topnav .btn,.p-dept-center,.dept-center,.logo-wrap,.vid-mute,.close{
+.dept,.d,.tile,.car-tabs span,.car-arrow,.topnav .btn,.p-dept-center,.dept-center,.logo-full-img,.vid-mute,.close{
   -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;outline:none;}
 html,body{height:100%;}
 body{font-family:var(--font-display);background:var(--black);color:var(--white);overflow:hidden;}
@@ -45,26 +45,30 @@ body{font-family:var(--font-display);background:var(--black);color:var(--white);
 .slide.active{opacity:1;}
 .home-perm-overlay{position:absolute;inset:0;background:rgba(0,0,0,.20);z-index:5;pointer-events:none;}
 .home-center{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
-.logo-wrap{margin:0 0 -50px 0;cursor:pointer;display:inline-block;position:relative;z-index:12;}
-.logo-full-img{width:var(--logo-w);height:clamp(70px,10vw,150px);opacity:0;animation:logoIn .8s ease .1s forwards;}
+/* LOGO WRAP passes pointer events THROUGH; only children clickable */
+.logo-wrap{margin:0 0 -50px 0;display:inline-block;position:relative;z-index:12;pointer-events:none;}
+.logo-full-img{width:var(--logo-w);height:clamp(70px,10vw,150px);opacity:0;animation:logoIn .8s ease .1s forwards;
+  pointer-events:auto;cursor:pointer;}
 @keyframes logoIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
-.logo-arrow{display:block;margin:-31px 0px -55px -60px;width:clamp(40px,6vw,80px);height:auto;}
-.logo-arrow-top{display:none;}
+.logo-arrow{display:block;margin:-31px 0px -55px -60px;width:clamp(40px,6vw,80px);height:auto;pointer-events:none;}
+.logo-arrow-top{display:none;pointer-events:none;}
 .tagline{margin-top:1rem;font-family:var(--font-serif);font-style:italic;font-size:clamp(15px,1.5vw,21px);line-height:1.5;
-  text-align:right;width:var(--logo-w);margin-left:auto;opacity:0;animation:fadeUp 1.2s ease .6s forwards;}
+  text-align:right;width:var(--logo-w);margin-left:auto;opacity:0;animation:fadeUp 1.2s ease .6s forwards;pointer-events:none;}
 .home-menu{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9;display:flex;flex-direction:column;
   align-items:flex-end;pointer-events:none;opacity:0;transition:opacity .35s ease;width:var(--logo-w);}
-.logo-wrap:hover + .home-menu, .home-menu:hover{opacity:1;pointer-events:auto;}
+.logo-full-img:hover ~ .home-menu, .home-menu:hover{opacity:1;pointer-events:auto;}
 .home-menu.open{opacity:1;pointer-events:auto;}
 .home-menu .stack{display:flex;flex-direction:column;align-items:flex-end;
   margin-right:calc(var(--logo-w) * 0.34 + 150px);
-  transform:translateY(0);transition:transform .35s ease;}
-.logo-wrap:hover + .home-menu .stack, .home-menu:hover .stack, .home-menu.open .stack{transform:translateY(-50px);}
+  transform:translateY(0);transition:transform .35s ease;position:relative;z-index:13;}
+.logo-full-img:hover ~ .home-menu .stack, .home-menu:hover .stack, .home-menu.open .stack{transform:translateY(-50px);}
 .home-menu .dept{font-family:var(--font-display);font-weight:700;color:var(--grey);cursor:pointer;line-height:1.1;
-  transition:color .2s;font-size:clamp(20px,2.6vw,40px);text-align:right;white-space:nowrap;}
+  transition:color .2s;font-size:clamp(20px,2.6vw,40px);text-align:right;white-space:nowrap;pointer-events:auto;position:relative;z-index:14;}
 .home-menu .dept:hover{color:var(--white);}
-.home-menu .spacer{height:clamp(55px,18vw,155px);}
+.home-menu .spacer{height:clamp(55px,18vw,155px);pointer-events:none;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:.9;transform:translateY(0);}}
+/* HOVER trigger: also open menu when hovering the whole home-center region (desktop) */
+.home-center:hover .home-menu{opacity:1;pointer-events:auto;}
 /* ================= 2. GRID ================= */
 #dept{background:#000;overflow:hidden;}
 .grid-scroll{position:absolute;inset:0;overflow-y:auto;z-index:1;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
@@ -141,7 +145,7 @@ body{font-family:var(--font-display);background:var(--black);color:var(--white);
 .car-title em{font-family:var(--font-serif);font-style:italic;font-weight:400;font-size:.5em;}
 .car-body{font-family:var(--font-serif);font-size:clamp(17px,1.7vw,26px);line-height:1.4;margin-top:.6em;}
 .car-body em{font-style:italic;}
-.car-body ol{list-style:none;counter-reset:s;display:inline-block;text-align:left;line-height:0.8;}
+.car-body ol{list-style:none;counter-reset:s;display:inline-block;text-align:left;line-height:1;}
 .car-body ol li{counter-increment:s;margin:.08em 0;}
 .car-body ol li::before{content:counter(s)".";display:inline-block;width:1.6em;}
 .car-arrow{position:absolute;top:50%;transform:translateY(-50%);font-size:clamp(30px,3vw,48px);cursor:pointer;user-select:none;opacity:.8;font-family:var(--font-serif);z-index:5;}
@@ -197,7 +201,7 @@ body{font-family:var(--font-display);background:var(--black);color:var(--white);
   <div class="home-center">
     <div class="logo-wrap" id="logoWrap">
       <img class="logo-arrow-top" src="assets/arrow_top.gif" alt="">
-      <div class="logo-img-el el-full logo-full-img" role="img" aria-label="every Joe"></div>
+      <div class="logo-img-el el-full logo-full-img" id="logoImg" role="img" aria-label="every Joe"></div>
       <img class="logo-arrow" src="assets/arrow.gif" alt="">
       <p class="tagline">Is a <em>genius</em>,<br>in some way,<br>or another.</p>
     </div>
@@ -391,24 +395,20 @@ const screens={home:document.getElementById('home'),dept:document.getElementById
 const homeBtn=document.getElementById('homeBtn');
 function show(id){Object.values(screens).forEach(s=>s.classList.remove('active'));screens[id].classList.add('active');homeBtn.style.display=id==='home'?'none':'flex';}
 homeBtn.onclick=()=>show('home');
-const logoWrap=document.getElementById('logoWrap'),homeMenu=document.getElementById('homeMenu');
+const logoImg=document.getElementById('logoImg'),homeMenu=document.getElementById('homeMenu');
 const isTouch=window.matchMedia('(hover:none)').matches;
-/* ---- TOUCH: logo opens menu only, blocks fall-through ---- */
 let menuJustOpened=false;
 if(isTouch){
-  logoWrap.addEventListener('click',(e)=>{
-    e.stopPropagation(); e.preventDefault();
+  logoImg.addEventListener('click',(e)=>{
+    e.stopPropagation();e.preventDefault();
     homeMenu.classList.toggle('open');
-    if(homeMenu.classList.contains('open')){
-      menuJustOpened=true;
-      setTimeout(()=>{menuJustOpened=false;},350);
-    }
+    if(homeMenu.classList.contains('open')){menuJustOpened=true;setTimeout(()=>{menuJustOpened=false;},350);}
   });
 }
 document.querySelectorAll('#homeMenu .dept').forEach(el=>{
   el.onclick=e=>{
     e.stopPropagation();
-    if(menuJustOpened)return;                 // block stray fall-through tap
+    if(menuJustOpened)return;
     homeMenu.classList.remove('open');
     openDept(el.dataset.dept);
   };
