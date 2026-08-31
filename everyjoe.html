@@ -54,13 +54,11 @@ body{font-family:var(--font-display);background:var(--black);color:var(--white);
   text-align:right;width:var(--logo-w);margin-left:auto;opacity:0;animation:fadeUp 1.2s ease .6s forwards;pointer-events:none;}
 .home-menu{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9;display:flex;flex-direction:column;
   align-items:flex-end;pointer-events:none;opacity:0;transition:opacity .35s ease;width:var(--logo-w);}
-/* menu opens ONLY when hovering the logo or the menu itself (no broad home-center trigger) */
-.logo-full-img:hover ~ .home-menu, .home-menu:hover{opacity:1;pointer-events:auto;}
 .home-menu.open{opacity:1;pointer-events:auto;}
 .home-menu .stack{display:flex;flex-direction:column;align-items:flex-end;
   margin-right:calc(var(--logo-w) * 0.34 + 150px);
   transform:translateY(0);transition:transform .35s ease;position:relative;z-index:13;}
-.logo-full-img:hover ~ .home-menu .stack, .home-menu:hover .stack, .home-menu.open .stack{transform:translateY(-50px);}
+.home-menu.open .stack{transform:translateY(-50px);}
 .home-menu .dept{font-family:var(--font-display);font-weight:700;color:var(--grey);cursor:pointer;line-height:1.1;
   transition:color .2s;font-size:clamp(20px,2.6vw,40px);text-align:right;white-space:nowrap;pointer-events:auto;position:relative;z-index:14;}
 .home-menu .dept:hover{color:var(--white);}
@@ -165,7 +163,6 @@ body{font-family:var(--font-display);background:var(--black);color:var(--white);
   .home-menu .stack{align-items:flex-start;margin-right:0;transform:translateY(0);}
   .home-menu.open .stack{transform:translateY(0);}
   .home-menu .dept{text-align:left;font-size:clamp(16px,4.6vw,26px);line-height:1;}
-  /* LARGER spacer on mobile portrait */
   .home-menu .spacer{height:clamp(80px,16vw,140px);}
   .tagline{width:auto;text-align:center;margin-left:0;}
   .logo-arrow{display:none;}
@@ -398,16 +395,23 @@ const screens={home:document.getElementById('home'),dept:document.getElementById
 const homeBtn=document.getElementById('homeBtn');
 function show(id){Object.values(screens).forEach(s=>s.classList.remove('active'));screens[id].classList.add('active');homeBtn.style.display=id==='home'?'none':'flex';}
 homeBtn.onclick=()=>show('home');
+
+/* ===== ROBUST MENU (JS-driven, works desktop hover + touch) ===== */
 const logoImg=document.getElementById('logoImg'),homeMenu=document.getElementById('homeMenu');
 const isTouch=window.matchMedia('(hover:none)').matches;
 let menuJustOpened=false;
+if(!isTouch){
+  logoImg.addEventListener('mouseenter',()=>homeMenu.classList.add('open'));
+  homeMenu.addEventListener('mouseenter',()=>homeMenu.classList.add('open'));
+  logoImg.addEventListener('mouseleave',()=>{setTimeout(()=>{if(!homeMenu.matches(':hover'))homeMenu.classList.remove('open');},80);});
+  homeMenu.addEventListener('mouseleave',()=>homeMenu.classList.remove('open'));
+}
 if(isTouch){
   logoImg.addEventListener('click',(e)=>{
     e.stopPropagation();e.preventDefault();
     homeMenu.classList.toggle('open');
     if(homeMenu.classList.contains('open')){menuJustOpened=true;setTimeout(()=>{menuJustOpened=false;},350);}
   });
-  /* tap anywhere else on home (not logo, not a menu item) closes the menu */
   document.getElementById('home').addEventListener('click',(e)=>{
     if(e.target===logoImg)return;
     if(e.target.closest('.home-menu'))return;
@@ -422,6 +426,7 @@ document.querySelectorAll('#homeMenu .dept').forEach(el=>{
     openDept(el.dataset.dept);
   };
 });
+
 const grid=document.getElementById('grid'),deptCurrent=document.getElementById('deptCurrent'),deptDropdown=document.getElementById('deptDropdown'),deptCenter=document.getElementById('deptCenter');
 function openDept(dept){deptCurrent.textContent=dept;grid.innerHTML='';
   (JOES[dept]||[]).forEach((j,idx)=>{const t=document.createElement('div');
