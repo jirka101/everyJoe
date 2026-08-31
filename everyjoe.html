@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>every Joe</title>
+<link rel="preload" as="image" href="assets/logo-everyjoe.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Cormorant:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
@@ -45,10 +46,12 @@ body{font-family:var(--font-display);background:var(--black);color:var(--white);
 .home-perm-overlay{position:absolute;inset:0;background:rgba(0,0,0,.20);z-index:5;pointer-events:none;}
 .home-center{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
 .logo-wrap{margin:0 0 -50px 0;cursor:pointer;display:inline-block;}
-.logo-full-img{width:var(--logo-w);height:clamp(70px,10vw,150px);}
+/* LOGO — appears first (own quick fade at .1s) */
+.logo-full-img{width:var(--logo-w);height:clamp(70px,10vw,150px);opacity:0;animation:logoIn .8s ease .1s forwards;}
+@keyframes logoIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 /* looping arrow gifs */
 .logo-arrow{display:block;margin:-31px 0px -55px -60px;width:clamp(40px,6vw,80px);height:auto;}
-.logo-arrow-top{display:none;}   /* mobile only */
+.logo-arrow-top{display:none;}
 .tagline{margin-top:1rem;font-family:var(--font-serif);font-style:italic;font-size:clamp(15px,1.5vw,21px);line-height:1.5;
   text-align:right;width:var(--logo-w);margin-left:auto;opacity:0;animation:fadeUp 1.2s ease .6s forwards;}
 .home-menu{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9;display:flex;flex-direction:column;
@@ -164,9 +167,8 @@ body{font-family:var(--font-display);background:var(--black);color:var(--white);
   .home-menu.open .stack{transform:translateY(-40px);}
   .home-menu .dept{text-align:left;font-size:clamp(18px,5.5vw,30px);}
   .tagline{width:auto;text-align:center;margin-left:0;}
-  /* MOBILE: hide bottom arrow, show top arrow above logo */
   .logo-arrow{display:none;}
-  .logo-arrow-top{display:block;margin: -30px 0px 0px -60px;width:clamp(40px,10vw,70px);height:auto;}
+  .logo-arrow-top{display:block;margin:-30px 0px 0px -60px;width:clamp(40px,10vw,70px);height:auto;}
   .grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:40vh;}
   #person{grid-template-columns:1fr;grid-template-rows:1fr 1fr;}
   .p-left{height:auto;}
@@ -384,9 +386,13 @@ DEPARTMENTS.forEach(d=>{
 const homeSlideshow=document.getElementById('homeSlideshow');
 const slideImgs=[];
 Object.keys(JOES).forEach(dept=>{JOES[dept].forEach(j=>{if(j && j.img && !slideImgs.includes(j.img)) slideImgs.push(j.img);});});
-slideImgs.forEach((src,i)=>{const s=document.createElement('div');s.className='slide'+(i===0?' active':'');s.style.backgroundImage=`url('${src}')`;homeSlideshow.appendChild(s);});
+slideImgs.forEach((src,i)=>{const s=document.createElement('div');s.className='slide';s.style.backgroundImage=`url('${src}')`;homeSlideshow.appendChild(s);});
 const slides=homeSlideshow.querySelectorAll('.slide');let ci=0;
-setInterval(()=>{slides[ci].classList.remove('active');ci=(ci+1)%slides.length;slides[ci].classList.add('active');},1800);
+/* start slideshow AFTER logo has shown first */
+setTimeout(()=>{
+  if(slides.length){slides[0].classList.add('active');}
+  setInterval(()=>{slides[ci].classList.remove('active');ci=(ci+1)%slides.length;slides[ci].classList.add('active');},1800);
+},600);
 const screens={home:document.getElementById('home'),dept:document.getElementById('dept'),person:document.getElementById('person')};
 const homeBtn=document.getElementById('homeBtn');
 function show(id){Object.values(screens).forEach(s=>s.classList.remove('active'));screens[id].classList.add('active');homeBtn.style.display=id==='home'?'none':'flex';}
