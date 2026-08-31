@@ -64,7 +64,7 @@ body{font-family:var(--font-display);background:var(--black);color:var(--white);
 .home-menu .dept{font-family:var(--font-display);font-weight:700;color:var(--grey);cursor:pointer;line-height:1.1;
   transition:color .2s;font-size:clamp(20px,2.6vw,40px);text-align:right;white-space:nowrap;pointer-events:auto;position:relative;z-index:14;}
 .home-menu .dept:hover{color:var(--white);}
-.home-menu .spacer{height: clamp(70px, 4vw, 36px);pointer-events:none;}
+.home-menu .spacer{    height: clamp(120px, 4vw, 36px);pointer-events:none;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:.9;transform:translateY(0);}}
 /* ================= 2. GRID ================= */
 #dept{background:#000;overflow:hidden;}
@@ -165,7 +165,7 @@ body{font-family:var(--font-display);background:var(--black);color:var(--white);
   .home-menu{left:0;right:auto;transform:translate(0,-50%);top:50%;width:auto;align-items:flex-start;padding-left:6vw;}
   .home-menu .stack{align-items:flex-start;margin-right:0;transform:translateY(0);}
   .home-menu.open .stack{transform:translateY(0);}   /* no upward jump on mobile */
-  .home-menu .dept{text-align:left;font-size:clamp(16px,4.6vw,26px);line-height:1.25;}
+  .home-menu .dept{text-align:left;font-size:clamp(16px,4.6vw,26px);line-height:1;}
   .home-menu .spacer{height:clamp(20px,4vw,36px);}   /* much smaller gap on mobile */
   .tagline{width:auto;text-align:center;margin-left:0;}
   .logo-arrow{display:none;}
