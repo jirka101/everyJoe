@@ -394,7 +394,6 @@ const screens={home:document.getElementById('home'),dept:document.getElementById
 const homeBtn=document.getElementById('homeBtn');
 function show(id){Object.values(screens).forEach(s=>s.classList.remove('active'));screens[id].classList.add('active');homeBtn.style.display=id==='home'?'none':'flex';}
 homeBtn.onclick=()=>show('home');
-
 /* ===== ROBUST MENU (JS-driven, works desktop hover + touch) ===== */
 const logoImg=document.getElementById('logoImg'),homeMenu=document.getElementById('homeMenu');
 const isTouch=window.matchMedia('(hover:none)').matches;
@@ -425,7 +424,6 @@ document.querySelectorAll('#homeMenu .dept').forEach(el=>{
     openDept(el.dataset.dept);
   };
 });
-
 const grid=document.getElementById('grid'),deptCurrent=document.getElementById('deptCurrent'),deptDropdown=document.getElementById('deptDropdown'),deptCenter=document.getElementById('deptCenter');
 function openDept(dept){deptCurrent.textContent=dept;grid.innerHTML='';
   (JOES[dept]||[]).forEach((j,idx)=>{const t=document.createElement('div');
@@ -507,7 +505,7 @@ personEl.addEventListener('touchend',(e)=>{
   touchStartX=null;touchStartY=null;
 },{passive:true});
 function panelHTML(p){let h='';
-  if(p===0)h=`<div class="car-title">${curJoe.purpose.word}</div><div class="car-body">${curJoe.purpose.statement}</div>`;
+  if(p===0){const w=curJoe.purpose.word;const lw=w.charAt(0).toLowerCase()+w.slice(1);h=`<div class="car-title">${lw}</div><div class="car-body">${curJoe.purpose.statement}</div>`;}
   if(p===1)h=`<div class="car-title">Top 5 <em>strengths</em></div><div class="car-body"><ol>${curJoe.top5.map(s=>`<li>${s}</li>`).join('')}</ol></div>`;
   if(p===2)h=`<div class="car-title">Growth</div><div class="car-body">${curJoe.growth.map(g=>`<div>${g}</div>`).join('')}</div>`;
   return h;}
