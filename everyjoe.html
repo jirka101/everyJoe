@@ -274,8 +274,11 @@ body{font-family:var(--font-display);background:var(--black);color:var(--white);
 </div>
 <script>
 const DEPARTMENTS=["admin","finance","creative","strategy","facilities","marketing","growth of people","client service","production","leadJoe","craft","BI","IT"];
-const JOES={creative:[
-  {name:"Martin Schlumpf",img:"assets/Martin-Schlumf.jpg",bg:"assets/Birds_Free3.jpg",joe:"assets/Joehuman_custom_12.png",desig:"Executive Creative Director | <b>Joe Public</b>",purpose:{word:"Strength",statement:"To help the people around me realise their inner <em>strength</em> by realising the strength I have in myself."},top5:["Achiever","Learner","Deliberative","Futuristic","Strategic"],growth:["<em>13</em> years at Joe","<em>8 September</em> Birthday"]},
+
+/* ===== ALL DEPARTMENTS NOW UNDER ONE JOES OBJECT ===== */
+const JOES={
+  creative:[
+    {name:"Martin Schlumpf",img:"assets/Martin-Schlumf.jpg",bg:"assets/Birds_Free3.jpg",joe:"assets/Joehuman_custom_12.png",desig:"Executive Creative Director | <b>Joe Public</b>",purpose:{word:"Strength",statement:"To help the people around me realise their inner <em>strength</em> by realising the strength I have in myself."},top5:["Achiever","Learner","Deliberative","Futuristic","Strategic"],growth:["<em>13</em> years at Joe","<em>8 September</em> Birthday"]},
   {name:"Tshepo Mogorosi",img:"assets/Tshepo-Mogorosi.jpg",bg:"assets/Basketball.jpg",joe:"assets/Joehuman_custom_10.png",desig:"Integrated Creative Director | <b>Joe Public</b>",purpose:{word:"Love",statement:"To plant a seed of <em>love</em> in everything I touch."},top5:["Ideation","Developer","Responsibility","Activator","Positivity"],growth:["<em>15</em> years at Joe","<em>22 November</em> Birthday"]},
   {name:"Adam Weber",img:"assets/Adam-Weber.jpg",bg:"assets/Pool.jpg",joe:"assets/Joehuman_custom_9.png",desig:"Executive Creative Director | <b>Joe Public</b>",purpose:{word:"Amazing",statement:"to bring out the amazing in those around me <em>through</em> being amazing."},top5:["Strategic","Adaptability","Communication","Arranger","Developer"],growth:["<em>8</em> years at Joe","<em>4 January</em> Birthday"]},
   {name:"Assaf Levy",img:"assets/Assaf-Levy.jpg",bg:"assets/Cactus.jpg",joe:"assets/Joehuman_custom_8.png",desig:"Executive Creative Director | <b>Joe Public</b>",purpose:{word:"Brave",statement:"To help others be brave <em>through</em> being brave."},top5:["Restorative","Responsibility","Relator","Learner","Ideation"],growth:["<em>7</em> years at Joe","<em>4 Nov</em> Birthday"]},
@@ -339,8 +342,7 @@ const JOES={creative:[
   {name:"Yolandi De Beer",img:"assets/Yolandi-De-Beer.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Digital Creative Director | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>8 April</em> Birthday"]},
   {name:"Yoliswa Nyawuza",img:"assets/Yoliswa-Nyawuza.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Motion Graphics Design Intern | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>29 August</em> Birthday"]},
   {name:"Zwelethu Mjingwana",img:"assets/Zwelethu-Mjingwana.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Art Director | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>28 August</em> Birthday"]}
-]};
-const REAL={
+  ],
   craft:[
     {name:"Jiri Miovsky",img:"assets/Jiri-Miovsky.jpg",video:"assets/Jiri.mp4",bg:"assets/git.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Motion Graphics Design Director | <b>Joe Public</b>",purpose:{word:"Brave",statement:"To be brave <em>through</em> leading by example."},top5:["Strategic","Significance","Restorative","Futuristic","Activator"],growth:["<em>8</em> years at Joe","<em>3 October</em> Birthday"]},
     {name:"Sergio Da Cruz",img:"assets/Sergio.jpeg",bg:"assets/gibs.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Sound Engineer | <b>Joe Public</b>",purpose:{word:"Passion",statement:"To drive passion <em>through</em> to others around me."},top5:["Strategic","Significance","Restorative","Futuristic","Activator"],growth:["<em>8</em> years at Joe","<em>22 November</em> Birthday"]},
@@ -350,7 +352,7 @@ const REAL={
     {name:"Saleem Naidoo",img:"assets/Saleem-Naidoo.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Digital Media Artist | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>25 August</em> Birthday"]},
     {name:"Veronica Gerfen",img:"assets/Veronica-Gerfen.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"FL Producer | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>12 November</em> Birthday"]}
   ],
-  leadJoe:[
+   leadJoe:[
     {name:"Gareth Leck",img:"assets/Gareth-Leck_2.jpg",bg:"assets/surf.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Group CEO | <b>Joe Public</b>",purpose:{word:"Creativity",statement:"To be brave <em>through</em> leading by example."},top5:["Strategic","Significance","Restorative","Futuristic","Activator"],growth:["<em>8</em> years at Joe","<em>3 October</em> Birthday"]},
     {name:"Pepe Marais",img:"assets/Pepe-Marais.jpg",bg:"assets/Space.jpg",joe:"assets/Joehuman_custom_11.png",desig:"Chief Vision and Purpose Officer | <b>Joe Public</b>",purpose:{word:"Greatness",statement:"To bring out the best in those around me, <em>through</em> bringing out the best in myself."},top5:["Strategic","Achiever","Futuristic","Relator","Competition"],growth:["<em>25</em> years at Joe","<em>5 November</em> Birthday"]},
     {name:"Khuthala Gala-Holten",img:"assets/Khuthala_Holten.jpg",bg:"assets/Lavender.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Managing Director | <b>Braid</b>",purpose:{word:"Creativity",statement:"To be brave <em>through</em> leading by example."},top5:["Strategic","Significance","Restorative","Futuristic","Activator"],growth:["<em>8</em> years at Joe","<em>3 October</em> Birthday"]},
@@ -359,7 +361,7 @@ const REAL={
     {name:"Xolisa Dyeshana",img:"assets/Xolisa-Dyeshana.jpg",bg:"assets/Boot.jpg",joe:"assets/Joehuman_custom_3.png",desig:"Chief Creative Officer | <b>Joe Public</b>",purpose:{word:"Joy",statement:"To inspire joy in others <em>through</em> cultivating it within myself first."},top5:["Connectedness","Positivity","Learner","Communication","Individualization"],growth:["<em>12</em> years at Joe","<em>29 December</em> Birthday"]},
     {name:"Zorana Safar",img:"assets/Zorana-Safar.jpg",bg:"assets/pin-board.jpg",joe:"assets/Joehuman_custom_3.png",desig:"Chief Operations and Commercial Officer | <b>Joe Public</b>",purpose:{word:"Hapiness",statement:"To inspire joy in others <em>through</em> cultivating it within myself first."},top5:["Connectedness","Positivity","Learner","Communication","Individualization"],growth:["<em>12</em> years at Joe","<em>29 December</em> Birthday"]}
   ],
-  strategy:[
+   strategy:[
     {name:"Laurent Marty",img:"assets/Laurent-Marty.jpg",bg:"assets/Birds_Free5.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Group Chief Strategic Officer | <b>Joe Public</b>",purpose:{word:"Vision",statement:"To lead with <em>vision</em> and strategic clarity."},top5:["Strategic","Futuristic","Analytical","Command","Ideation"],growth:["<em>14</em> years at Joe","<em>6 May</em> Birthday"]},
     {name:"Courtney Mocke",img:"assets/Courtney-Mocke.jpg",bg:"assets/Birds_Free4.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Strategist | <b>Joe Public</b>",purpose:{word:"Insight",statement:"To uncover the <em>insight</em> that unlocks great work."},top5:["Analytical","Learner","Input","Intellection","Ideation"],growth:["<em>3</em> years at Joe","<em>27 May</em> Birthday"]},
     {name:"Aneeb Hendricks",img:"assets/Aneeb-Hendricks.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Strategy Planner | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>31 December</em> Birthday"]},
@@ -374,13 +376,13 @@ const REAL={
     {name:"Vadyn Moodley",img:"assets/Vadyn-Moodley.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"FL Senior Digital Strategy Planner | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>2 May</em> Birthday"]},
     {name:"Zeenat Mahomed",img:"assets/Zeenat-Mahomed.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Strategy Planner | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>14 February</em> Birthday"]}
   ],
-  growth of people:[
-    {name:"Rika Nell",img:"assets/Rika-Nell.jpg",bg:"assets/Bubbles.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Group Talent Director | <b>Joe Public</b>",purpose:{word:"People",statement:"To grow <em>people</em> so they can grow others."},top5:["Developer","Relator","Individualization","Positivity","Empathy"],growth:["<em>11</em> years at Joe","<em>6 August</em> Birthday"]},
+  "growth of people":[
+   {name:"Rika Nell",img:"assets/Rika-Nell.jpg",bg:"assets/Bubbles.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Group Talent Director | <b>Joe Public</b>",purpose:{word:"People",statement:"To grow <em>people</em> so they can grow others."},top5:["Developer","Relator","Individualization","Positivity","Empathy"],growth:["<em>11</em> years at Joe","<em>6 August</em> Birthday"]},
     {name:"Neo Moleleki",img:"assets/Neo.png",bg:"assets/mag-ball.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Group HR Manager | <b>Joe Public</b>",purpose:{word:"People",statement:"To grow <em>people</em> so they can grow others."},top5:["Developer","Relator","Individualization","Positivity","Empathy"],growth:["<em>years</em> at Joe","<em>15 September</em> Birthday"]},
     {name:"Fundi Twala",img:"assets/Fundi-Twala.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"HR Officer | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>25 January</em> Birthday"]}
   ],
-  client service:[
-    {name:"Kelly Bardon",img:"assets/Kelly-Bardon.jpg",bg:"assets/cat.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Business Unit Director | <b>Joe Public</b>",purpose:{word:"Great",statement:"To live and be great <em>through</em> assertive, yet kind leadership."},top5:["Adaptability","Maximizer","Consistency","Self-Assurance","Strategic"],growth:["<em>5</em> years at Joe","<em>14 August</em> Birthday"]},
+  "client service":[
+   {name:"Kelly Bardon",img:"assets/Kelly-Bardon.jpg",bg:"assets/cat.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Business Unit Director | <b>Joe Public</b>",purpose:{word:"Great",statement:"To live and be great <em>through</em> assertive, yet kind leadership."},top5:["Adaptability","Maximizer","Consistency","Self-Assurance","Strategic"],growth:["<em>5</em> years at Joe","<em>14 August</em> Birthday"]},
     {name:"Andrew Wright",img:"assets/Andrew-Wright.jpg",bg:"assets/paperclips.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Business Unit Director | <b>Joe Public</b>",purpose:{word:"Great",statement:"To live and be great <em>through</em> assertive, yet kind leadership."},top5:["Adaptability","Maximizer","Consistency","Self-Assurance","Strategic"],growth:["<em>5</em> years at Joe","<em>6 March</em> Birthday"]},
     {name:"Nina Fredericksz",img:"assets/Nina-.jpg",bg:"assets/Birds_Free3.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Business Unit Director | <b>Joe Public</b>",purpose:{word:"Trust",statement:"To build <em>trust</em> in every client relationship."},top5:["Relator","Responsibility","Communication","Harmony","Consistency"],growth:["<em>6</em> years at Joe","<em>20 February</em> Birthday"]},
     {name:"Phindile Ndzekeli",img:"assets/Phindile-Ndzekeli.jpg",bg:"assets/Seat.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Business Unit Director | <b>Joe Public</b>",purpose:{word:"Connection",statement:"To create <em>connection</em> between people and brands."},top5:["Woo","Communication","Positivity","Includer","Activator"],growth:["<em>7</em> years at Joe","<em>13 April</em> Birthday"]},
@@ -408,7 +410,7 @@ const REAL={
     {name:"Simamkele Lesele",img:"assets/Simamkele-Lesele.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Account Executive | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>23 April</em> Birthday"]},
     {name:"Telana Botes",img:"assets/Telana-Botes.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Group Account Director | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>9 July</em> Birthday"]}
   ],
- finance:[
+  finance:[
     {name:"Bianca Raghuber",img:"assets/Bianca-Raghuber.jpeg",bg:"assets/Shake.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Group Financial Director | <b>Joe Public</b>",purpose:{word:"Order",statement:"To bring <em>order</em> so creativity can thrive."},top5:["Discipline","Analytical","Responsibility","Deliberative","Consistency"],growth:["<em>10</em> years at Joe","<em>10 August</em> Birthday"]},
     {name:"Diane Pepperell",img:"assets/Diane-Pepperell.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Finance Manager | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>18 July</em> Birthday"]},
     {name:"Elton Meyer",img:"assets/Elton-Meyer.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Business Accountant | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>6 October</em> Birthday"]},
@@ -426,8 +428,8 @@ const REAL={
   marketing:[
     {name:"Jabula Ngobese",img:"assets/Jabula-Ngobese_.jpg",bg:"assets/Burger.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Brand Manager | <b>Joe Public</b>",purpose:{word:"Story",statement:"To tell the <em>story</em> that makes brands loved."},top5:["Communication","Woo","Ideation","Positivity","Strategic"],growth:["<em>4</em> years at Joe","<em>16 May</em> Birthday"]}
   ],
- production:[
-    {name:"Tammy Chetty",img:"assets/Tammy Chetty.jpg",bg:"assets/Burger.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Senior Stills Producer | <b>Joe Public</b>",purpose:{word:"Story",statement:"To tell the <em>story</em> that makes brands loved."},top5:["Communication","Woo","Ideation","Positivity","Strategic"],growth:["<em>4</em> years at Joe","<em>6 October</em> Birthday"]},
+  production:[
+     {name:"Tammy Chetty",img:"assets/Tammy Chetty.jpg",bg:"assets/Burger.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Senior Stills Producer | <b>Joe Public</b>",purpose:{word:"Story",statement:"To tell the <em>story</em> that makes brands loved."},top5:["Communication","Woo","Ideation","Positivity","Strategic"],growth:["<em>4</em> years at Joe","<em>6 October</em> Birthday"]},
     {name:"Diane Cole",img:"assets/Di-Cole.jpg",bg:"assets/Seat.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Head of TV & Radio | <b>Joe Public</b>",purpose:{word:"Story",statement:"To tell the <em>story</em> that makes brands loved."},top5:["Communication","Woo","Ideation","Positivity","Strategic"],growth:["<em>4</em> years at Joe","<em>12 September</em> Birthday"]},
     {name:"Shawn Holten",img:"assets/Shawn Holten.jpg",bg:"assets/Birds_Free1.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Senior DTP Operator | <b>Joe Public</b>",purpose:{word:"Story",statement:"To tell the <em>story</em> that makes brands loved."},top5:["Communication","Woo","Ideation","Positivity","Strategic"],growth:["<em>4</em> years at Joe","<em>8 February</em> Birthday"]},
     {name:"Fuad Rangraze",img:"assets/Fuad Rangraze.jpg",bg:"assets/Burger.jpg",joe:"assets/Joehuman_custom_1.png",desig:"DTP Head | <b>Joe Public</b>",purpose:{word:"Story",statement:"To tell the <em>story</em> that makes brands loved."},top5:["Communication","Woo","Ideation","Positivity","Strategic"],growth:["<em>4</em> years at Joe","<em>19 February</em> Birthday"]},
@@ -452,13 +454,22 @@ const REAL={
     {name:"Oratile Seleke",img:"assets/Oratile-Seleke.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"IT Technician | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>27 February</em> Birthday"]}
   ],
   admin:[
-    {name:"Michele Lazarus",img:"assets/Mich Lazarus.jpg",bg:"assets/Burger.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Head of Traffic | <b>Joe Public</b>",purpose:{word:"Formidable",statement:"To tell the <em>story</em> that makes brands loved."},top5:["Communication","Woo","Ideation","Positivity","Strategic"],growth:["<em>4</em> years at Joe","<em>21 October</em> Birthday"]},
+     {name:"Michele Lazarus",img:"assets/Mich Lazarus.jpg",bg:"assets/Burger.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Head of Traffic | <b>Joe Public</b>",purpose:{word:"Formidable",statement:"To tell the <em>story</em> that makes brands loved."},top5:["Communication","Woo","Ideation","Positivity","Strategic"],growth:["<em>4</em> years at Joe","<em>21 October</em> Birthday"]},
     {name:"Bronwyn James",img:"assets/Bronwyn-James.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"OSAAT: Managing Director | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>6 September</em> Birthday"]},
     {name:"Debbie Dickson",img:"assets/Debbie-Dickson.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Executive PA to Gareth Leck / Laurent Marty / Mpume Ngobese | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>23 September</em> Birthday"]},
     {name:"Kamohelo Mariti",img:"assets/Kamohelo-Mariti.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"HR Administrator | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>23 July</em> Birthday"]},
     {name:"Karen Hall",img:"assets/Karen-Hall.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Office Manager | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>22 January</em> Birthday"]},
     {name:"Refilwe Mpshe",img:"assets/Refilwe-Mpshe.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Receptionist | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>1 June</em> Birthday"]},
     {name:"Tsholofelo Dithipe",img:"assets/Tsholofelo-Dithipe.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"PA to Pepe Marais / Xolisa Dyeshana | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>10 May</em> Birthday"]}
+  ],
+  facilities:[
+    {name:"Jayson Rabora",img:"assets/Jayson-Rabora.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Office Assistant | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>4 November</em> Birthday"]},
+    {name:"Michael Malukwe",img:"assets/Michael-Malukwe.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Driver | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>13 October</em> Birthday"]},
+    {name:"Nokukhanya Shezi",img:"assets/Nokukhanya-Shezi.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Housekeeper | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>29 June</em> Birthday"]},
+    {name:"Thabiso Ramashala",img:"assets/Thabiso-Ramashala.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Maintenance Officer | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>20 September</em> Birthday"]},
+    {name:"Thandi Ratau",img:"assets/Thandi-Ratau.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Facilities Manager | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>21 July</em> Birthday"]},
+    {name:"Thulisile Mazibuko",img:"assets/Thulisile-Mazibuko.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Housekeeper | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>22 December</em> Birthday"]},
+    {name:"Zandile Shezi",img:"assets/Zandile-Shezi.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Housekeeper | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>28 October</em> Birthday"]}
   ],
   BI:[
     {name:"Ayanda Sokhulu",img:"assets/Ayanda-Sokhulu.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"BI & Production Intern | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>22 July</em> Birthday"]},
@@ -471,59 +482,10 @@ const REAL={
     {name:"Thabang Thema",img:"assets/Thabang-Thema.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"BI Analyst | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>8 February</em> Birthday"]},
     {name:"Yolanda Van Wyk",img:"assets/Yolanda-Van-Wyk.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Business Intelligence Manager | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>21 August</em> Birthday"]}
   ],
-  facilities:[
-    {name:"Jayson Rabora",img:"assets/Jayson-Rabora.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Office Assistant | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>4 November</em> Birthday"]},
-    {name:"Michael Malukwe",img:"assets/Michael-Malukwe.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Driver | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>13 October</em> Birthday"]},
-    {name:"Nokukhanya Shezi",img:"assets/Nokukhanya-Shezi.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Housekeeper | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>29 June</em> Birthday"]},
-    {name:"Thabiso Ramashala",img:"assets/Thabiso-Ramashala.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Maintenance Officer | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>20 September</em> Birthday"]},
-    {name:"Thandi Ratau",img:"assets/Thandi-Ratau.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Facilities Manager | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>21 July</em> Birthday"]},
-    {name:"Thulisile Mazibuko",img:"assets/Thulisile-Mazibuko.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Housekeeper | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>22 December</em> Birthday"]},
-    {name:"Zandile Shezi",img:"assets/Zandile-Shezi.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_1.png",desig:"Housekeeper | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>28 October</em> Birthday"]}
-  ]
 };
-const DUMMY_COLORS=["#17b0a7","#9e5ec4","#f7a1c2","#CCFF00","#2b2c6b","#5a4436","#3a4a6a","#6a3a5a"];
-const FIRST=["Alex","Jordan","Sam","Robin","Casey","Morgan","Taylor","Jamie","Riley","Quinn","Avery","Reese"];
-const LAST=["Nkosi","Adams","Petersen","Naidoo","Botha","Dlamini","Meyer","Khan","Roos","Sithole","Fisher","Van Wyk"];
-const WORDS=["Purpose","Drive","Focus","Impact","Balance","Growth","Trust","Clarity","Momentum","Heart","Spark","Care"];
-const STRENGTHS=["Strategic","Achiever","Learner","Ideation","Relator","Focus","Positivity","Communication","Analytical","Responsibility","Futuristic","Developer","Input","Command","Empathy"];
-const ROLES={
-  admin:["Office Manager","Administrator","Executive Assistant","Receptionist","Operations Coordinator"],
-  finance:["Management Accountant","Bookkeeper","Financial Analyst","Payroll Specialist","Accounts Clerk"],
-  strategy:["Senior Strategist","Brand Strategist","Data Strategist","Junior Strategist","Comms Strategist"],
-  craft:["Senior Motion Designer","3D Artist","Illustrator","Retoucher","Craft Lead"],
-  facilities:["Facilities Manager","Maintenance Lead","Groundskeeper","Health & Safety Officer","Facilities Coordinator"],
-  marketing:["Marketing Director","Social Media Lead","Marketing Coordinator","PR Specialist","Content Manager"],
-  "growth of people":["Talent Partner","L&D Specialist","Recruiter","People Coordinator","HR Business Partner"],
-  "client service":["Account Director","Account Manager","Account Executive","Client Partner","Account Coordinator"],
-  production:["Head of Production","Producer","Production Manager","Traffic Manager","Production Coordinator"],
-  leadJoe:["Chief Executive Officer","Chief Operating Officer","Managing Director","Chief Financial Officer","Chief People Officer"],
-  BI:["BI Director","Data Analyst","Insights Lead","Data Engineer","Reporting Specialist"],
-  IT:["IT Director","Systems Administrator","IT Support Lead","Network Engineer","Helpdesk Technician"]
-};
-function pick(arr,i){return arr[i%arr.length];}
-function makeDummy(dept,count,offset){
-  const roles=ROLES[dept]||["Team Member","Team Member","Team Member","Team Member","Team Member"];
-  const team=[];
-  for(let i=0;i<count;i++){
-    const idx=i+offset;
-    team.push({
-      name:`${pick(FIRST,idx+dept.length)} ${pick(LAST,idx*2+dept.length)}`,
-      color:DUMMY_COLORS[idx%DUMMY_COLORS.length],
-      joe:"assets/Joehuman_custom_1.png",
-      desig:`${pick(roles,idx)} | <b>Joe Public</b>`,
-      purpose:{word:pick(WORDS,idx+dept.length), statement:`To bring <em>${pick(WORDS,idx+dept.length).toLowerCase()}</em> to everything the ${dept} team does.`},
-      top5:[pick(STRENGTHS,idx),pick(STRENGTHS,idx+3),pick(STRENGTHS,idx+6),pick(STRENGTHS,idx+9),pick(STRENGTHS,idx+12)],
-      growth:[`<em>${2+i*2}</em> years at Joe`,`<em>${1+i*5} ${["January","April","June","August","November"][i%5]}</em> Birthday`]
-    });
-  }
-  return team;
-}
-DEPARTMENTS.forEach(d=>{
-  if(d==='creative')return;
-  const real=REAL[d]||[];
-  const need=Math.max(0,5-real.length);
-  JOES[d]=[...real, ...makeDummy(d,need,real.length)];
-});
+/* Ensure every menu department has an array (empty if none yet) */
+DEPARTMENTS.forEach(d=>{ if(!JOES[d]) JOES[d]=[]; });
+
 const homeSlideshow=document.getElementById('homeSlideshow');
 const slideImgs=[];
 Object.keys(JOES).forEach(dept=>{JOES[dept].forEach(j=>{if(j && j.img && !slideImgs.includes(j.img)) slideImgs.push(j.img);});});
