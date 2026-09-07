@@ -554,7 +554,7 @@ function applyPerson(j){curJoe=j;pDeptGhost.textContent=curDept;
     pVid.pause(); pVid.removeAttribute('src'); pVid.load();
     pImg.style.background = j.img ? `url('${j.img}') center/cover no-repeat` : (j.color || '');
   }
-  pBg.style.background = j.bg ? `url('${j.bg}') center/cover no-repeat` : (j.color ? j.color : `url('assets/Basketball.jpg') center/cover no-repeat`);
+  pBg.style.background = j.bg ? `url('${j.bg}') center/cover no-repeat` : (j.color ? j.color : `#000000') center/cover no-repeat`);
   joeHuman.style.backgroundImage=`url('${j.joe || 'assets/Joehuman_custom_1.png'}')`;
   panel=0;initPanel();}
 function openPerson(dept,gridIdx){curDept=dept;
