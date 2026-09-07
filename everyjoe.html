@@ -563,8 +563,21 @@ function openPerson(dept,gridIdx){curDept=dept;
   applyPerson(person);show('person');}
 pDeptCenter.addEventListener('mouseenter',()=>personOverlay.style.opacity='1');
 pDeptCenter.addEventListener('mouseleave',()=>personOverlay.style.opacity='0');
-if(isTouch){pDeptCenter.addEventListener('click',(e)=>{if(e.target.closest('.d'))return;pDeptCenter.classList.toggle('open');personOverlay.style.opacity=pDeptCenter.classList.contains('open')?'1':'0';});}
-vidMute.onclick=(e)=>{e.stopPropagation();pVid.muted=!pVid.muted;vidMute.textContent=pVid.muted?'🔇':'🔊';};
+
+// Click the current department name (ghost) -> go back to that department's grid
+pDeptGhost.addEventListener('click',(e)=>{
+  e.stopPropagation();
+  openDept(curDept);
+});
+
+if(isTouch){
+  pDeptCenter.addEventListener('click',(e)=>{
+    if(e.target.closest('.d'))return;      // clicking a dropdown item -> handled elsewhere
+    if(e.target===pDeptGhost)return;       // clicking the current name -> handled by pDeptGhost listener above
+    pDeptCenter.classList.toggle('open');
+    personOverlay.style.opacity=pDeptCenter.classList.contains('open')?'1':'0';
+  });
+}vidMute.onclick=(e)=>{e.stopPropagation();pVid.muted=!pVid.muted;vidMute.textContent=pVid.muted?'🔇':'🔊';};
 let scrolling=false;
 function scrollTeam(dir){
   if(scrolling)return;scrolling=true;
