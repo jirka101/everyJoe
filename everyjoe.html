@@ -102,7 +102,7 @@ body{font-family:var(--font-display);background:var(--black);color:var(--white);
 .vid-mute:hover{background:rgba(0,0,0,.7);transform:scale(1.08);}
 .p-left.has-video .vid-mute{display:flex;}
 .p-right{position:relative;overflow:hidden;background:var(--black);}
-.p-right .{position:absolute;inset:0;background:url('assets/Bubbles.jpg') center/cover no-repeat;transition:transform .6s cubic-bezier(.5,0,.2,1),opacity .5s ease;}
+.p-right .pbg{position:absolute;inset:0;background:url('assets/Bubbles.jpg') center/cover no-repeat;transition:transform .6s cubic-bezier(.5,0,.2,1),opacity .5s ease;}
 .person-perm-overlay{position:absolute;inset:0;background:rgba(0,0,0,.20);z-index:5;pointer-events:none;}
 .joe-human-custom{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:10;width:13.6%;height:76.5%;
   background-image:url('assets/Joehuman_custom_01.png');background-size:contain;background-repeat:no-repeat;background-position:center;pointer-events:none;
@@ -241,7 +241,7 @@ body{font-family:var(--font-display);background:var(--black);color:var(--white);
     <video class="pvid" id="pVid" muted loop playsinline preload="auto"></video>
     <button class="vid-mute" id="vidMute" title="mute / unmute">🔇</button>
   </div>
- <div class="p-right"><div class="pbg" id="pBg"></div></div> 
+  <div class="p-right"><div class="pbg" id="pBg"></div></div>
   <div class="person-perm-overlay"></div>
   <div class="joe-human-custom" id="joeHuman"></div>
   <div class="person-overlay" id="personOverlay"></div>
@@ -306,7 +306,7 @@ const JOES={
   {name:"Declan Sharp",img:"assets/Declan-Sharp.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_27.png",desig:"Creative Director | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>21 July</em> Birthday"]},
   {name:"Dinilesizwe Konzi",img:"assets/Dinilesizwe-Konzi.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_281.png",desig:"FL Art Director | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>20 October</em> Birthday"]},
   {name:"Divine Ikechukwu",img:"assets/Divine-Ikechukwu.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_29.png",desig:"Junior Art Director | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>28 February</em> Birthday"]},
-  {name:"Gerhardus De Beer",img:"assets/Gerhardus-De-Beer.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_30.png",desig:"FL Senior Art Director | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>14 August</em> Birthday"]},
+  {name:"Gerhardus De Bee",img:"assets/Gerhardus-De-Bee.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_30.png",desig:"FL Senior Art Director | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>14 August</em> Birthday"]},
   {name:"Huvasan Reddy",img:"assets/Huvasan-Reddy.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_31.png",desig:"Senior Creative Quality Assurer | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>3 February</em> Birthday"]},
   {name:"Ilse van der Walt",img:"assets/Ilse-van-der-Walt.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_32.png",desig:"Integrated Art Director | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>30 August</em> Birthday"]},
   {name:"Janneke Van Zyl",img:"assets/Janneke-Van-Zyl.jpg",bg:"assets/default.jpg",joe:"assets/Joehuman_custom_33.png",desig:"Art Director | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>5 March</em> Birthday"]},
@@ -537,7 +537,7 @@ function openDept(dept){deptCurrent.textContent=dept;grid.innerHTML='';
   deptDropdown.innerHTML='';DEPARTMENTS.filter(d=>d!==dept).forEach(d=>{const el=document.createElement('div');el.className='d';el.textContent=d;el.onclick=ev=>{ev.stopPropagation();deptCenter.classList.remove('open');openDept(d);};deptDropdown.appendChild(el);});
   show('dept');document.querySelector('.grid-scroll').scrollTop=0;}
 if(isTouch){deptCenter.addEventListener('click',(e)=>{if(e.target.closest('.d'))return;deptCenter.classList.toggle('open');});}
-const pLeft=document.getElementById('pLeft'),pName=document.getElementById('pName'),pImg=document.getElementById('pImg'),pVid=document.getElementById('pVid'),=document.getElementById('pBg'),pDeptGhost=document.getElementById('pDeptGhost'),joeHuman=document.getElementById('joeHuman');
+const pLeft=document.getElementById('pLeft'),pName=document.getElementById('pName'),pImg=document.getElementById('pImg'),pVid=document.getElementById('pVid'),pBg=document.getElementById('pBg'),pDeptGhost=document.getElementById('pDeptGhost'),joeHuman=document.getElementById('joeHuman');
 const pDeptDropdown=document.getElementById('pDeptDropdown'),personOverlay=document.getElementById('personOverlay'),pDeptCenter=document.getElementById('pDeptCenter');
 const carousel=document.getElementById('carousel'),carStage=document.getElementById('carStage'),carTabs=document.querySelectorAll('.car-tabs span');
 const vidMute=document.getElementById('vidMute');
