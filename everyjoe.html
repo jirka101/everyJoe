@@ -43,8 +43,14 @@ body{font-family:var(--font-display);background:var(--black);color:var(--white);
 .slideshow{position:absolute;inset:0;}
 .slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.1s ease;}
 .slide.active{opacity:1;}
+/* Slideshow caption */
+.slide-caption{position:absolute;left:0;bottom:0;z-index:6;padding:0 6% 7%;pointer-events:none;}
+.slide-name{font-family:var(--font-display);font-weight:700;font-size:clamp(22px,2.6vw,44px);line-height:1.05;color:var(--white);cursor:pointer;pointer-events:auto;display:inline-block;transition:color .2s;text-shadow:0 2px 12px rgba(0,0,0,.6);}
+.slide-name:hover{color:var(--grey);}
+.slide-dept{font-family:var(--font-display);font-weight:700;font-size:clamp(14px,1.4vw,22px);line-height:1.2;color:var(--grey);margin-top:.35em;cursor:pointer;pointer-events:auto;display:inline-block;transition:color .2s;text-shadow:0 2px 12px rgba(0,0,0,.6);text-transform:capitalize;}
+.slide-dept:hover{color:var(--white);}
 .home-perm-overlay{position:absolute;inset:0;background:rgba(0,0,0,.20);z-index:5;pointer-events:none;}
-.home-center{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.home-center{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none;}
 .logo-wrap{margin:0 0 -50px 0;display:inline-block;position:relative;z-index:12;pointer-events:none;}
 .logo-full-img{width:var(--logo-w);height:clamp(70px,10vw,150px);opacity:0;animation:logoIn .8s ease .1s forwards;pointer-events:auto;cursor:pointer;}
 @keyframes logoIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
@@ -60,224 +66,7 @@ body{font-family:var(--font-display);background:var(--black);color:var(--white);
   transform:translateY(0);transition:transform .35s ease;position:relative;z-index:13;}
 .home-menu.open .stack{transform:translateY(-50px);}
 .home-menu .dept{font-family:var(--font-display);font-weight:700;color:var(--grey);cursor:pointer;line-height:1.1;
-  transition:color .2s;font-size:clamp(20px,2.6vw,40px);text-align:right;white-space:nowrap;pointer-events:auto;position:relative;z-index:14;}
-.home-menu .dept:hover{color:var(--white);}
-.home-menu .spacer{height:clamp(120px,4vw,36px);pointer-events:none;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:.9;transform:translateY(0);}}
-/* ================= 2. GRID ================= */
-#dept{background:#000;overflow:hidden;}
-.grid-scroll{position:absolute;inset:0;overflow-y:auto;z-index:1;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
-.grid-scroll::-webkit-scrollbar{display:none;}
-.grid{display:grid;grid-template-columns:repeat(5,1fr);grid-auto-rows:50vh;gap:0px;min-height:100vh;}
-.tile{position:relative;overflow:hidden;background:#222;cursor:pointer;transition:filter .4s ease;filter:brightness(.55);}
-.tile.blank{cursor:default;filter:none;}
-.tile .ph{position:absolute;inset:0;background-size:cover;background-position:center;}
-.tile:not(.blank):hover{filter:brightness(1);}
-.tile .info{position:absolute;left:0;bottom:0;padding:0 4% 4%;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;z-index:3;}
-.tile:not(.blank):hover .info{opacity:1;transform:translateY(0);}
-.tile .info .name{font-family:var(--font-display);font-weight:700;font-size:clamp(20px,2.2vw,40px);line-height:1;}
-.tile .info .desig{font-size:clamp(11px,1vw,15px);margin-top:.5em;}
-.tile .info .desig b{font-weight:700;}
-.grid-overlay{position:absolute;inset:0;background:rgba(0,0,0,.20);z-index:10;pointer-events:none;}
-.grid-header{position:fixed;inset:0;z-index:20;pointer-events:none;}
-.gh-every{position:absolute;top:3.5%;left:2.5%;width:clamp(120px,16vw,240px);height:var(--corner-size);}
-.gh-joe{position:absolute;top:3%;right:3%;width:clamp(90px,11vw,170px);height:calc(var(--corner-size)*1.15);}
-.dept-center{position:fixed;top:3.5%;left:50%;transform:translateX(-50%);z-index:25;cursor:pointer;text-align:center;pointer-events:auto;}
-.dept-center .current{font-family:var(--font-display);font-weight:700;font-size:var(--corner-size);color:var(--white);line-height:1;}
-.dept-dropdown{display:flex;flex-direction:column;align-items:center;opacity:0;max-height:0;overflow:hidden;transition:opacity .35s,max-height .35s;}
-.dept-center:hover .dept-dropdown,.dept-center.open .dept-dropdown{opacity:1;max-height:600px;margin-top:.3em;}
-.dept-dropdown .d{font-family:var(--font-display);font-weight:700;color:var(--grey);font-size:clamp(16px,2.4vw,34px);line-height:1.2;cursor:pointer;transition:color .2s;white-space:nowrap;}
-.dept-dropdown .d:hover{color:var(--white);}
-.grid-scroll-hint{position:fixed;bottom:3%;left:50%;transform:translateX(-50%);z-index:22;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.6);animation:bob 2s ease infinite;pointer-events:none;}
-/* ================= 3. INDIVIDUAL ================= */
-#person{display:grid;grid-template-columns:1fr 1fr;}
-.p-left{position:relative;overflow:hidden;background:var(--black);}
-.p-left .pimg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .6s cubic-bezier(.5,0,.2,1),opacity .5s ease;}
-.p-left .pvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;transition:transform .6s cubic-bezier(.5,0,.2,1),opacity .5s ease;}
-.p-left.has-video .pimg{display:none;}
-.p-left.has-video .pvid{display:block;}
-.vid-mute{position:absolute;top:85%;left:2.5%;z-index:22;width:38px;height:38px;border-radius:50%;
-  border:1px solid rgba(255,255,255,.5);background:rgba(0,0,0,.45);color:#fff;font-size:15px;cursor:pointer;
-  display:none;align-items:center;justify-content:center;transition:background .2s,transform .2s;backdrop-filter:blur(2px);}
-.vid-mute:hover{background:rgba(0,0,0,.7);transform:scale(1.08);}
-.p-left.has-video .vid-mute{display:flex;}
-.p-right{position:relative;overflow:hidden;background:var(--black);}
-.p-right .pbg{position:absolute;inset:0;background:#000000;transition:transform .6s cubic-bezier(.5,0,.2,1),opacity .5s ease;}
-.person-perm-overlay{position:absolute;inset:0;background:rgba(0,0,0,.20);z-index:5;pointer-events:none;}
-.joe-human-custom{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:10;width:13.6%;height:76.5%;
-  background-image:url('assets/Joehuman_custom_01.png');background-size:contain;background-repeat:no-repeat;background-position:center;pointer-events:none;
-  transition:transform .6s cubic-bezier(.5,0,.2,1),opacity .5s ease;}
-.person-overlay{position:absolute;inset:0;background:rgba(0,0,0,.60);opacity:0;pointer-events:none;transition:opacity .35s ease;z-index:11;}
-.slide-up-out{transform:translateY(-100%)!important;opacity:0;}
-.slide-down-out{transform:translateY(100%)!important;opacity:0;}
-.joe-human-custom.slide-up-out{transform:translate(-50%,-160%)!important;opacity:0;}
-.joe-human-custom.slide-down-out{transform:translate(-50%,60%)!important;opacity:0;}
-.enter-from-bottom{transform:translateY(100%);opacity:0;}
-.enter-from-top{transform:translateY(-100%);opacity:0;}
-.joe-human-custom.enter-from-bottom{transform:translate(-50%,60%);opacity:0;}
-.joe-human-custom.enter-from-top{transform:translate(-50%,-160%);opacity:0;}
-.corner{position:absolute;z-index:20;}
-.corner.every{top:3.5%;left:2.5%;width:clamp(110px,15vw,220px);height:var(--corner-size);}
-.corner.joe{top:3%;right:3%;width:clamp(85px,10vw,160px);height:calc(var(--corner-size)*1.15);}
-.corner.knows{bottom:6%;left:2.5%;font-family:var(--font-display);font-weight:700;color:var(--white);font-size:var(--corner-size);line-height:1;}
-.corner.name{bottom:6%;right:2.5%;left:auto;text-align:right;font-family:var(--font-display);font-weight:700;font-size:var(--corner-size);color:var(--white);white-space:nowrap;line-height:1;transition:opacity .4s ease;}
-.corner.name .desig{position:absolute;top:100%;right:0;left:auto;text-align:right;font-size:.30em;font-weight:400;margin-top:.4em;}
-.corner.name .desig b{font-weight:700;}
-.p-dept-center{position:absolute;top:3.5%;left:50%;transform:translateX(-50%);z-index:30;cursor:pointer;text-align:center;}
-.p-dept-center .p-current{font-family:var(--font-display);font-weight:700;font-size:var(--corner-size);color:rgba(255,255,255,.28);transition:color .3s ease;line-height:1;}
-.p-dept-center:hover .p-current,.p-dept-center.open .p-current{color:var(--white);}
-.p-dept-dropdown{display:flex;flex-direction:column;align-items:center;opacity:0;max-height:0;overflow:hidden;transition:opacity .35s,max-height .35s;}
-.p-dept-center:hover .p-dept-dropdown,.p-dept-center.open .p-dept-dropdown{opacity:1;max-height:600px;margin-top:.3em;}
-.p-dept-dropdown .d{font-family:var(--font-display);font-weight:700;color:var(--grey);font-size:clamp(16px,2.4vw,34px);line-height:1.2;cursor:pointer;transition:color .2s;white-space:nowrap;}
-.p-dept-dropdown .d:hover{color:var(--white);}
-.carousel{position:absolute;top:50%;right:2.5%;left:auto;transform:translateY(-50%);width:min(38%,520px);z-index:20;color:var(--white);text-align:right;transition:opacity .4s ease;}
-.car-tabs{display:flex;justify-content:flex-end;gap:1.4em;font-size:clamp(11px,1vw,15px);margin-bottom:.6em;}
-.car-tabs span{color:rgba(255,255,255,.5);cursor:pointer;transition:color .2s;}
-.car-tabs span.active{color:var(--white);}
-.car-stage{position:relative;min-height:clamp(220px,26vw,340px);overflow:hidden;}
-.car-panel{position:absolute;top:0;right:0;width:100%;transition:transform .45s ease, opacity .45s ease;text-align:right;}
-.car-title{font-family:var(--font-display);font-weight:700;font-size:clamp(34px,4.6vw,72px);line-height:1;display:flex;justify-content:flex-end;align-items:baseline;gap:.25em;}
-.car-title em{font-family:var(--font-serif);font-style:italic;font-weight:400;font-size:.5em;}
-.car-body{font-family:var(--font-serif);font-size:clamp(17px,1.7vw,26px);line-height:1.4;margin-top:.6em;}
-.car-body em{font-style:italic;}
-.car-body ol{list-style:none;counter-reset:s;display:inline-block;text-align:left;line-height:0.8;}
-.car-body ol li{counter-increment:s;margin:0.3em 0;}
-.car-body ol li::before{content:counter(s)".";display:inline-block;width:1.6em;}
-.car-arrow{position:absolute;top:50%;transform:translateY(-50%);font-size:clamp(30px,3vw,48px);cursor:pointer;user-select:none;opacity:.8;font-family:var(--font-serif);z-index:5;}
-.car-arrow:hover{opacity:1;}
-.car-arrow.prev{left:-14%;}.car-arrow.next{right:-6%;}
-.scroll-hint{position:absolute;bottom:6%;left:50%;transform:translateX(-50%);z-index:22;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.6);animation:bob 2s ease infinite;pointer-events:none;}
-@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0);opacity:.5;}50%{transform:translateX(-50%) translateY(6px);opacity:.9;}}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;display:none;align-items:center;justify-content:center;}
-.modal.open{display:flex;}
-.login-box{background:#111;border:1px solid #333;padding:40px;width:320px;text-align:center;position:relative;}
-.login-logo{width:110px;height:26px;background-image:var(--logo-full);background-size:contain;background-repeat:no-repeat;background-position:center;margin:0 auto 26px;}
-.login-box input{width:100%;padding:12px;margin:6px 0;background:#000;border:1px solid #333;color:var(--white);font-family:var(--font-display);}
-.login-box button{width:100%;padding:12px;margin-top:14px;background:var(--teal);border:none;color:#000;font-weight:700;cursor:pointer;font-family:var(--font-display);}
-.login-box .close{position:absolute;top:14px;right:18px;cursor:pointer;font-size:22px;}
-.login-box .note{margin-top:14px;font-size:12px;color:#777;}
-@media(max-width:800px){
-  #home{grid-template-columns:1fr;}
-  .home__left{display:none;}
-  .home-menu{left:0;right:auto;transform:translate(0,-50%);top:50%;width:auto;align-items:flex-start;padding-left:6vw;}
-  .home-menu .stack{align-items:flex-start;margin-right:0;transform:translateY(0);}
-  .home-menu .dept{text-align:left;font-size:clamp(16px,4.6vw,26px);line-height:1;}
-  .home-menu .spacer{height:clamp(80px,16vw,140px);}
-  .tagline{width:auto;text-align:center;margin-left:0;}
-  .logo-arrow{display:none;}
-  .logo-arrow-top{display:block;margin:-50px 0px -15px -30px;width:clamp(40px,10vw,70px);height:auto;}
-  .grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:40vh;}
-  #person{grid-template-columns:1fr;grid-template-rows:1fr 1fr;}
-  .p-left{height:auto;}
-  .p-right{height:auto;}
-  .joe-human-custom{width:23.12%;height:29.92%;}
-  .carousel{top:auto;bottom:10%;right:auto;left:50%;transform:translateX(-50%);width:88%;text-align:center;}
-  .car-tabs{justify-content:center;}
-  .car-title{justify-content:center;}
-  .car-stage{min-height:150px;}
-  .car-arrow.prev{left:-2%;}.car-arrow.next{right:-2%;}
-  .corner.name{bottom:2%;right:4%;font-size:clamp(22px,6vw,40px);}
-  .corner.knows{bottom:2%;left:4%;font-size:clamp(22px,6vw,40px);}
-  .corner.every{width:clamp(90px,26vw,160px);}
-  .corner.joe{width:clamp(70px,18vw,120px);}
-}
-</style>
-</head>
-<body>
-<div class="topnav">
-  <div class="btn" id="loginTab"><span class="dot"></span> login</div>
-  <div class="btn" id="homeBtn">⌂ home</div>
-</div>
-<!-- 1. HOME -->
-<section class="screen active" id="home">
-  <div class="home__left"></div>
-  <div class="home__right"><div class="slideshow" id="homeSlideshow"></div></div>
-  <div class="home-perm-overlay"></div>
-  <div class="home-center">
-    <div class="logo-wrap" id="logoWrap">
-      <img class="logo-arrow-top" src="assets/arrow_top.gif" alt="">
-      <div class="logo-img-el el-full logo-full-img" id="logoImg" role="img" aria-label="every Joe"></div>
-      <img class="logo-arrow" src="assets/arrow.gif" alt="">
-      <p class="tagline">Is a <em>genius</em>,<br>in some way,<br>or another.</p>
-    </div>
-    <div class="home-menu" id="homeMenu">
-      <div class="stack">
-        <div class="dept" data-dept="admin">admin</div>
-        <div class="dept" data-dept="finance">finance</div>
-        <div class="dept" data-dept="creative">creative</div>
-        <div class="dept" data-dept="facilities">facilities</div>
-        <div class="dept" data-dept="marketing">marketing</div>
-        <div class="dept" data-dept="client service">client service</div>
-        <div class="dept" data-dept="growth of people">growth of people</div>
-        <div class="spacer"></div>
-        <div class="dept" data-dept="production">production</div>
-        <div class="dept" data-dept="strategy">strategy</div>
-        <div class="dept" data-dept="leadJoe">leadJoe</div>
-        <div class="dept" data-dept="craft">craft</div>
-        <div class="dept" data-dept="BI">BI</div>
-        <div class="dept" data-dept="IT">IT</div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- 2. GRID -->
-<section class="screen" id="dept">
-  <div class="grid-scroll"><div class="grid" id="grid"></div></div>
-  <div class="grid-overlay"></div>
-  <div class="grid-header">
-    <div class="logo-img-el el-every gh-every" role="img" aria-label="every"></div>
-    <div class="logo-img-el el-joe gh-joe" role="img" aria-label="Joe"></div>
-  </div>
-  <div class="dept-center" id="deptCenter">
-    <div class="current" id="deptCurrent">creative</div>
-    <div class="dept-dropdown" id="deptDropdown"></div>
-  </div>
-  <div class="grid-scroll-hint">scroll ↓ more</div>
-</section>
-<!-- 3. INDIVIDUAL -->
-<section class="screen" id="person">
-  <div class="p-left" id="pLeft">
-    <div class="pimg" id="pImg"></div>
-    <video class="pvid" id="pVid" muted loop playsinline preload="auto"></video>
-    <button class="vid-mute" id="vidMute" title="mute / unmute">🔇</button>
-  </div>
-  <div class="p-right"><div class="pbg" id="pBg"></div></div>
-  <div class="person-perm-overlay"></div>
-  <div class="joe-human-custom" id="joeHuman"></div>
-  <div class="person-overlay" id="personOverlay"></div>
-  <div class="carousel" id="carousel">
-    <div class="car-tabs"><span data-i="0">Purpose Word</span><span data-i="1">Top 5 Strengths</span><span data-i="2">Growth</span></div>
-    <div class="car-stage" id="carStage"></div>
-    <div class="car-arrow prev" id="carPrev">‹</div>
-    <div class="car-arrow next" id="carNext">›</div>
-  </div>
-  <div class="logo-img-el el-every corner every" role="img" aria-label="every"></div>
-  <div class="logo-img-el el-joe corner joe" role="img" aria-label="Joe"></div>
-  <div class="corner knows">knows</div>
-  <div class="corner name" id="pName"></div>
-  <div class="p-dept-center" id="pDeptCenter">
-    <div class="p-current" id="pDeptGhost">creative</div>
-    <div class="p-dept-dropdown" id="pDeptDropdown"></div>
-  </div>
-  <div class="scroll-hint">scroll ↕ team</div>
-</section>
-<!-- LOGIN MODAL -->
-<div class="modal" id="loginModal">
-  <div class="login-box">
-    <span class="close" id="loginClose">×</span>
-    <div class="login-logo" role="img" aria-label="every Joe"></div>
-    <input type="text" placeholder="username">
-    <input type="password" placeholder="password">
-    <button>log in</button>
-    <p class="note">Editing &amp; superuser access — Phase 5</p>
-  </div>
-</div>
-<script>
-const DEPARTMENTS=["admin","finance","creative","strategy","facilities","marketing","growth of people","client service","production","leadJoe","craft","BI","IT"];
-
-/* ===== ALL DEPARTMENTS NOW UNDER ONE JOES OBJECT ===== */
-const JOES={
-  creative:[
+  transition:color .2s;font-size:clamp(20px,2.6vw,40px);text-align:right;white-
   {name:"Adam Weber",img:"assets/Adam-Weber.jpg",joe:"assets/Joehuman_custom_185.png",desig:"Executive Creative Director | <b>Joe Public</b>",purpose:{word:"Amazing",statement:"to bring out the amazing in those around me."},top5:["Strategic","Adaptability","Communication","Arranger","Developer"],growth:["<em>8</em> years at Joe","<em>4 January</em> Birthday"]},
   {name:"Aleksandra Todd",img:"assets/Aleksandra-Todd.jpg",joe:"assets/Joehuman_custom_16.png",desig:"Creative Quality Assurance | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>14 July</em> Birthday"]},
   {name:"Alison Hingle",img:"assets/Alison-Hingle.jpg",joe:"assets/Joehuman_custom_17.png",desig:"Copywriter | <b>Joe Public</b>",purpose:{word:"growth",statement:"To serve the growth of our people, our clients, our country and our world, through the greatness of creativity."},top5:["Strategic","Achiever","Learner","Ideation","Relator"],growth:["<em>years</em> at Joe","<em>13 July</em> Birthday"]},
@@ -482,163 +271,38 @@ const JOES={
 /* Ensure every menu department has an array (empty if none yet) */
 DEPARTMENTS.forEach(d=>{ if(!JOES[d]) JOES[d]=[]; });
 
+/* ===== SLIDESHOW WITH NAME + DEPARTMENT CAPTIONS ===== */
 const homeSlideshow=document.getElementById('homeSlideshow');
-const slideImgs=[];
-Object.keys(JOES).forEach(dept=>{JOES[dept].forEach(j=>{if(j && j.img && !slideImgs.includes(j.img)) slideImgs.push(j.img);});});
-slideImgs.forEach((src,i)=>{const s=document.createElement('div');s.className='slide';s.style.backgroundImage=`url('${src}')`;homeSlideshow.appendChild(s);});
+const slideData=[];
+const seenImgs=[];
+Object.keys(JOES).forEach(dept=>{
+  JOES[dept].forEach((j,idx)=>{
+    if(j && j.img && !j.blank && !seenImgs.includes(j.img)){
+      seenImgs.push(j.img);
+      slideData.push({img:j.img, name:j.name, dept:dept, gridIdx:idx});
+    }
+  });
+});
+slideData.forEach((d,i)=>{
+  const s=document.createElement('div');
+  s.className='slide';
+  s.style.backgroundImage=`url('${d.img}')`;
+  s.innerHTML=`
+    <div class="slide-caption">
+      <div class="slide-name" data-dept="${d.dept}" data-idx="${d.gridIdx}">${d.name}</div>
+      <div class="slide-dept" data-dept="${d.dept}">${d.dept}</div>
+    </div>`;
+  homeSlideshow.appendChild(s);
+});
 const slides=homeSlideshow.querySelectorAll('.slide');let ci=0;
 setTimeout(()=>{if(slides.length){slides[0].classList.add('active');}setInterval(()=>{slides[ci].classList.remove('active');ci=(ci+1)%slides.length;slides[ci].classList.add('active');},1800);},600);
-const screens={home:document.getElementById('home'),dept:document.getElementById('dept'),person:document.getElementById('person')};
-const homeBtn=document.getElementById('homeBtn');
-function show(id){Object.values(screens).forEach(s=>s.classList.remove('active'));screens[id].classList.add('active');homeBtn.style.display=id==='home'?'none':'flex';}
-homeBtn.onclick=()=>show('home');
-/* ===== ROBUST MENU (JS-driven, works desktop hover + touch) ===== */
-const logoImg=document.getElementById('logoImg'),homeMenu=document.getElementById('homeMenu');
-const isTouch=window.matchMedia('(hover:none)').matches;
-let menuJustOpened=false;
-if(!isTouch){
-  logoImg.addEventListener('mouseenter',()=>homeMenu.classList.add('open'));
-  homeMenu.addEventListener('mouseenter',()=>homeMenu.classList.add('open'));
-  logoImg.addEventListener('mouseleave',()=>{setTimeout(()=>{if(!homeMenu.matches(':hover'))homeMenu.classList.remove('open');},80);});
-  homeMenu.addEventListener('mouseleave',()=>homeMenu.classList.remove('open'));
-}
-if(isTouch){
-  logoImg.addEventListener('click',(e)=>{
-    e.stopPropagation();e.preventDefault();
-    homeMenu.classList.toggle('open');
-    if(homeMenu.classList.contains('open')){menuJustOpened=true;setTimeout(()=>{menuJustOpened=false;},350);}
-  });
-  document.getElementById('home').addEventListener('click',(e)=>{
-    if(e.target===logoImg)return;
-    if(e.target.closest('.home-menu'))return;
-    homeMenu.classList.remove('open');
-  });
-}
-document.querySelectorAll('#homeMenu .dept').forEach(el=>{
-  el.onclick=e=>{
+
+/* Click handlers for slideshow captions */
+homeSlideshow.addEventListener('click',(e)=>{
+  const nameEl=e.target.closest('.slide-name');
+  const deptEl=e.target.closest('.slide-dept');
+  if(nameEl){
     e.stopPropagation();
-    if(menuJustOpened)return;
-    homeMenu.classList.remove('open');
-    openDept(el.dataset.dept);
-  };
-});
-const grid=document.getElementById('grid'),deptCurrent=document.getElementById('deptCurrent'),deptDropdown=document.getElementById('deptDropdown'),deptCenter=document.getElementById('deptCenter');
-function openDept(dept){deptCurrent.textContent=dept;grid.innerHTML='';
-  (JOES[dept]||[]).forEach((j,idx)=>{const t=document.createElement('div');
-    if(j.blank){t.className='tile blank';t.style.background=j.color;grid.appendChild(t);return;}
-    t.className='tile';
-    const ph = j.img ? `background-image:url('${j.img}')` : (j.color ? `background:${j.color}` : '');
-    t.innerHTML=`<div class="ph" style="${ph}"></div><div class="info"><div class="name">${j.name}</div><div class="desig">${j.desig}</div></div>`;
-    t.onclick=()=>openPerson(dept,idx);grid.appendChild(t);});
-  deptDropdown.innerHTML='';DEPARTMENTS.filter(d=>d!==dept).forEach(d=>{const el=document.createElement('div');el.className='d';el.textContent=d;el.onclick=ev=>{ev.stopPropagation();deptCenter.classList.remove('open');openDept(d);};deptDropdown.appendChild(el);});
-  show('dept');document.querySelector('.grid-scroll').scrollTop=0;}
-if(isTouch){deptCenter.addEventListener('click',(e)=>{if(e.target.closest('.d'))return;deptCenter.classList.toggle('open');});}
-const pLeft=document.getElementById('pLeft'),pName=document.getElementById('pName'),pImg=document.getElementById('pImg'),pVid=document.getElementById('pVid'),pBg=document.getElementById('pBg'),pDeptGhost=document.getElementById('pDeptGhost'),joeHuman=document.getElementById('joeHuman');
-const pDeptDropdown=document.getElementById('pDeptDropdown'),personOverlay=document.getElementById('personOverlay'),pDeptCenter=document.getElementById('pDeptCenter');
-const carousel=document.getElementById('carousel'),carStage=document.getElementById('carStage'),carTabs=document.querySelectorAll('.car-tabs span');
-const vidMute=document.getElementById('vidMute');
-let curDept='creative',curIdx=0,curJoe=null,panel=0;
-function clickableTeam(dept){return JOES[dept].filter(j=>!j.blank);}
-function applyPerson(j){curJoe=j;pDeptGhost.textContent=curDept;
-  pName.innerHTML=`${j.name}<span class="desig">${j.desig}</span>`;
-  if(j.video){
-    pLeft.classList.add('has-video');
-    pVid.src=j.video; pVid.muted=true; pVid.play().catch(()=>{});
-    vidMute.textContent='🔇';
-  } else {
-    pLeft.classList.remove('has-video');
-    pVid.pause(); pVid.removeAttribute('src'); pVid.load();
-    pImg.style.background = j.img ? `url('${j.img}') center/cover no-repeat` : (j.color || '');
-  }
-  pBg.style.background = j.bg ? `url('${j.bg}') center/cover no-repeat` : (j.color ? j.color : `#000000') center/cover no-repeat`);
-  joeHuman.style.backgroundImage=`url('${j.joe || 'assets/Joehuman_custom_1.png'}')`;
-  panel=0;initPanel();}
-function openPerson(dept,gridIdx){curDept=dept;
-  const team=clickableTeam(dept);const person=JOES[dept][gridIdx];curIdx=team.indexOf(person);
-  pDeptDropdown.innerHTML='';DEPARTMENTS.filter(d=>d!==dept).forEach(d=>{const el=document.createElement('div');el.className='d';el.textContent=d;el.onclick=ev=>{ev.stopPropagation();pDeptCenter.classList.remove('open');openDept(d);};pDeptDropdown.appendChild(el);});
-  applyPerson(person);show('person');}
-pDeptCenter.addEventListener('mouseenter',()=>personOverlay.style.opacity='1');
-pDeptCenter.addEventListener('mouseleave',()=>personOverlay.style.opacity='0');
-
-// Click the current department name (ghost) -> go back to that department's grid
-pDeptGhost.addEventListener('click',(e)=>{
-  e.stopPropagation();
-  openDept(curDept);
-});
-
-if(isTouch){
-  pDeptCenter.addEventListener('click',(e)=>{
-    if(e.target.closest('.d'))return;      // clicking a dropdown item -> handled elsewhere
-    if(e.target===pDeptGhost)return;       // clicking the current name -> handled by pDeptGhost listener above
-    pDeptCenter.classList.toggle('open');
-    personOverlay.style.opacity=pDeptCenter.classList.contains('open')?'1':'0';
-  });
-}vidMute.onclick=(e)=>{e.stopPropagation();pVid.muted=!pVid.muted;vidMute.textContent=pVid.muted?'🔇':'🔊';};
-let scrolling=false;
-function scrollTeam(dir){
-  if(scrolling)return;scrolling=true;
-  const team=clickableTeam(curDept);
-  const nextIdx=(curIdx + dir + team.length) % team.length;
-  const outImg = dir>0 ? 'slide-up-out' : 'slide-down-out';
-  pImg.classList.add(outImg);pVid.classList.add(outImg);pBg.classList.add(outImg);joeHuman.classList.add(outImg);
-  pName.style.opacity='0';carousel.style.opacity='0';
-  setTimeout(()=>{
-    curIdx=nextIdx;applyPerson(team[curIdx]);
-    const enter = dir>0 ? 'enter-from-bottom' : 'enter-from-top';
-    [pImg,pVid,pBg,joeHuman].forEach(el=>{el.style.transition='none';el.classList.remove('slide-up-out','slide-down-out');el.classList.add(enter);});
-    void pImg.offsetWidth;
-    [pImg,pVid,pBg,joeHuman].forEach(el=>{el.style.transition='';el.classList.remove('enter-from-bottom','enter-from-top');});
-    pName.style.opacity='1';carousel.style.opacity='1';
-    setTimeout(()=>{scrolling=false;},550);
-  },520);
-}
-document.getElementById('person').addEventListener('wheel',(e)=>{
-  if(!screens.person.classList.contains('active'))return;
-  e.preventDefault();
-  if(Math.abs(e.deltaY)<8)return;
-  scrollTeam(e.deltaY>0?1:-1);
-},{passive:false});
-let touchStartX=null,touchStartY=null;
-const personEl=document.getElementById('person');
-personEl.addEventListener('touchstart',(e)=>{
-  if(!screens.person.classList.contains('active'))return;
-  touchStartX=e.touches[0].clientX;touchStartY=e.touches[0].clientY;
-},{passive:true});
-personEl.addEventListener('touchend',(e)=>{
-  if(!screens.person.classList.contains('active')||touchStartX===null)return;
-  const dx=touchStartX - e.changedTouches[0].clientX;
-  const dy=touchStartY - e.changedTouches[0].clientY;
-  if(Math.abs(dx)>Math.abs(dy)){
-    if(Math.abs(dx)>50){ goTo(dx>0 ? (panel+1)%3 : (panel+2)%3); }
-  } else {
-    if(Math.abs(dy)>50){ scrollTeam(dy>0?1:-1); }
-  }
-  touchStartX=null;touchStartY=null;
-},{passive:true});
-function panelHTML(p){let h='';
-  if(p===0){const w=curJoe.purpose.word;const lw=w.charAt(0).toLowerCase()+w.slice(1);h=`<div class="car-title">${lw}</div><div class="car-body">${curJoe.purpose.statement}</div>`;}
-  if(p===1)h=`<div class="car-title">Top 5 <em>strengths</em></div><div class="car-body"><ol>${curJoe.top5.map(s=>`<li>${s}</li>`).join('')}</ol></div>`;
-  if(p===2)h=`<div class="car-title">Growth</div><div class="car-body">${curJoe.growth.map(g=>`<div>${g}</div>`).join('')}</div>`;
-  return h;}
-function setTabs(){carTabs.forEach((t,i)=>t.classList.toggle('active',i===panel));}
-function initPanel(){carStage.innerHTML=`<div class="car-panel" style="transform:translateX(0);opacity:1">${panelHTML(panel)}</div>`;setTabs();}
-function goTo(target){
-  if(target===panel)return;const dir=target>panel?1:-1;
-  const oldPanel=carStage.querySelector('.car-panel');
-  const newPanel=document.createElement('div');newPanel.className='car-panel';newPanel.innerHTML=panelHTML(target);
-  newPanel.style.transform=`translateX(${dir>0?'60px':'-60px'})`;newPanel.style.opacity='0';carStage.appendChild(newPanel);
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    newPanel.style.transform='translateX(0)';newPanel.style.opacity='1';
-    oldPanel.style.transform=`translateX(${dir>0?'-60px':'60px'})`;oldPanel.style.opacity='0';}));
-  setTimeout(()=>oldPanel.remove(),480);panel=target;setTabs();
-}
-document.getElementById('carPrev').onclick=()=>goTo((panel+2)%3);
-document.getElementById('carNext').onclick=()=>goTo((panel+1)%3);
-carTabs.forEach(t=>t.onclick=()=>goTo(+t.dataset.i));
-const modal=document.getElementById('loginModal');
-document.getElementById('loginTab').onclick=()=>modal.classList.add('open');
-document.getElementById('loginClose').onclick=()=>modal.classList.remove('open');
-modal.onclick=e=>{if(e.target===modal)modal.classList.remove('open');};
-</script>
-</body>
+    openPerson(nameEl.dataset.dept, +nameEl.dataset.idx);
+  } else if(deptEl){
 </html>
